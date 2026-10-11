@@ -1,0 +1,1149 @@
+<title>תקנות במרחב</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap">
+<style>
+/* פריסה: תוכן עניינים מימין, נוסח באמצע, גיליון עם מודל משמאל. חמישים גוונים של אפור, אדום רק למגבלה */
+:root {
+  --bg: #e6e7e9;
+  --bg-deep: #d7d9dc;
+  --surface: #f3f4f5;
+  --surface-2: #e9ebed;
+  --sheet-top: #f7f8f8;
+  --sheet-bottom: #dcdfe2;
+  --ink: #1c1e21;
+  --ink-2: #474b51;
+  --ink-3: #767b83;
+  --ink-4: #a3a7ad;
+  --rule: #c7cace;
+  --hi-edge: rgba(255,255,255,.9);
+  --sh-light: rgba(255,255,255,.85);
+  --sh-dark: rgba(38,42,50,.16);
+  --sh-deep: rgba(38,42,50,.26);
+  --limit: #a32f27;
+  --chip-bg: #1c1e21;
+  --chip-fg: #f3f4f5;
+  --hit: #cfd2d6;
+  --model-mass: #eef0f1;
+  --model-ground: #dadde0;
+  --model-edge: #3b3f45;
+  --model-accent: #8c9198;
+
+  --font: 'Rubik', 'Arial Hebrew', 'Segoe UI', Arial, sans-serif;
+  --w-thin: 300;
+  --w-mid: 400;
+  --w-strong: 500;
+
+  --index-w: 280px;
+  --measure: 60ch;
+  --r-ctl: 8px;
+  --r-card: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1b1d; --bg-deep: #121314; --surface: #25272a; --surface-2: #1f2123;
+    --sheet-top: #2b2d30; --sheet-bottom: #17181a;
+    --ink: #eceef0; --ink-2: #c3c6cb; --ink-3: #8f949b; --ink-4: #62666c; --rule: #3a3d41;
+    --hi-edge: rgba(255,255,255,.07); --sh-light: rgba(255,255,255,.04); --sh-dark: rgba(0,0,0,.45); --sh-deep: rgba(0,0,0,.6);
+    --limit: #e0675d; --chip-bg: #eceef0; --chip-fg: #1a1b1d; --hit: #3d4044;
+    --model-mass: #3a3d41; --model-ground: #26282b; --model-edge: #c9ccd0; --model-accent: #7d828a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1b1d; --bg-deep: #121314; --surface: #25272a; --surface-2: #1f2123;
+  --sheet-top: #2b2d30; --sheet-bottom: #17181a;
+  --ink: #eceef0; --ink-2: #c3c6cb; --ink-3: #8f949b; --ink-4: #62666c; --rule: #3a3d41;
+  --hi-edge: rgba(255,255,255,.07); --sh-light: rgba(255,255,255,.04); --sh-dark: rgba(0,0,0,.45); --sh-deep: rgba(0,0,0,.6);
+  --limit: #e0675d; --chip-bg: #eceef0; --chip-fg: #1a1b1d; --hit: #3d4044;
+  --model-mass: #3a3d41; --model-ground: #26282b; --model-edge: #c9ccd0; --model-accent: #7d828a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(120% 80% at 85% 0%, var(--surface) 0%, var(--bg) 45%, var(--bg-deep) 100%) fixed, var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: var(--w-thin);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 4px; }
+
+.app {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding-inline: 16px;
+  padding-block: 0 16px;
+}
+
+/* כותרת */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;
+  padding-block: 14px;
+  background: linear-gradient(180deg, var(--bg) 70%, transparent);
+}
+.brand { display: grid; gap: 0; }
+.brand h1 { margin: 0; font-size: 21px; font-weight: var(--w-mid); letter-spacing: .01em; }
+.brand p { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+
+.search { position: relative; max-width: 620px; width: 100%; justify-self: center; }
+.search-box {
+  display: flex; align-items: center; gap: 8px;
+  border-radius: 999px; padding: 6px 8px 6px 14px;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: inset 2px 3px 6px var(--sh-dark), inset -2px -2px 5px var(--sh-light);
+}
+.search-box input {
+  flex: 1; min-width: 0; border: 0; background: transparent; padding: 6px 4px;
+  font-weight: var(--w-thin); font-size: 15px;
+}
+.search-box input:focus { outline: none; }
+.search-box:focus-within { box-shadow: inset 2px 3px 6px var(--sh-dark), inset -2px -2px 5px var(--sh-light), 0 0 0 1px var(--ink-3); }
+.count { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.results {
+  position: absolute; inset-inline: 0; top: calc(100% + 8px); z-index: 30;
+  list-style: none; margin: 0; padding: 6px;
+  border-radius: var(--r-card);
+  background: linear-gradient(170deg, var(--surface), var(--surface-2));
+  box-shadow: 0 18px 40px var(--sh-deep), inset 0 1px 0 var(--hi-edge);
+  max-height: 60vh; overflow: auto;
+}
+.results li { display: grid; grid-template-columns: 5.5em 1fr; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+.results li[aria-selected="true"], .results li:hover { background: var(--hit); }
+.results .r-ref { color: var(--ink-3); font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+.results .r-title { font-weight: var(--w-mid); }
+.results .r-snip { grid-column: 2; font-size: 13px; color: var(--ink-3); }
+.results .empty { display: block; color: var(--ink-3); cursor: default; }
+mark { background: var(--chip-bg); color: var(--chip-fg); border-radius: 3px; padding: 0 2px; }
+
+.tools { display: flex; gap: 8px; }
+.btn {
+  border: 0; cursor: pointer; padding: 7px 14px; border-radius: var(--r-ctl);
+  font-size: 13.5px; font-weight: var(--w-mid); color: var(--ink-2);
+  background: linear-gradient(160deg, var(--surface), var(--surface-2));
+  box-shadow: -2px -2px 5px var(--sh-light), 2px 3px 7px var(--sh-dark), inset 0 1px 0 var(--hi-edge);
+  transition: box-shadow .15s, color .15s;
+}
+.btn:hover { color: var(--ink); }
+.btn:active, .btn[aria-pressed="true"] {
+  color: var(--ink);
+  box-shadow: inset 2px 3px 6px var(--sh-dark), inset -2px -2px 5px var(--sh-light);
+}
+
+.notice {
+  grid-column: 1 / -1;
+  font-size: 12.5px; color: var(--ink-3);
+  border-radius: var(--r-ctl); padding: 6px 12px;
+  background: linear-gradient(90deg, var(--surface-2), transparent);
+}
+.notice strong { font-weight: var(--w-strong); color: var(--ink-2); }
+
+/* שלוש עמודות */
+.main {
+  display: grid; gap: 20px;
+  grid-template-columns: var(--index-w) minmax(0, 1fr) minmax(0, 1.25fr);
+  align-items: start;
+}
+
+/* תוכן עניינים */
+.index {
+  position: sticky; top: 132px;
+  max-height: calc(100vh - 150px); overflow: auto;
+  padding: 14px 10px 14px 6px;
+  border-radius: var(--r-card);
+  background: linear-gradient(175deg, var(--surface) 0%, var(--surface-2) 100%);
+  box-shadow: -3px -3px 8px var(--sh-light), 4px 6px 14px var(--sh-dark), inset 0 1px 0 var(--hi-edge);
+}
+.index details { margin-block-end: 6px; }
+.index summary {
+  list-style: none; cursor: pointer;
+  padding: 8px 10px; border-radius: 8px;
+  font-weight: var(--w-mid); font-size: 14px;
+  display: flex; justify-content: space-between; gap: 8px;
+}
+.index summary::-webkit-details-marker { display: none; }
+.index summary .part-n { color: var(--ink-3); font-weight: var(--w-thin); font-size: 12.5px; }
+.index summary:hover { background: var(--hit); }
+.index ul { list-style: none; margin: 0; padding: 0 0 6px; }
+.index li button {
+  width: 100%; border: 0; background: none; cursor: pointer; text-align: start;
+  display: grid; grid-template-columns: 4.6em 1fr auto; gap: 6px; align-items: baseline;
+  padding: 5px 10px; border-radius: 7px; font-size: 13.5px; color: var(--ink-2);
+}
+.index li button:hover { background: var(--hit); color: var(--ink); }
+.index li button[aria-current="true"] {
+  color: var(--ink); background: linear-gradient(160deg, var(--surface-2), var(--bg));
+  box-shadow: inset 2px 2px 5px var(--sh-dark), inset -2px -2px 4px var(--sh-light);
+}
+.index .ref { direction: ltr; text-align: right; color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: 12.5px; }
+.index .has3d { font-size: 10.5px; font-weight: var(--w-strong); color: var(--ink); border: 1px solid var(--ink-4); border-radius: 4px; padding: 0 4px; line-height: 1.5; }
+.index .group-label { padding: 8px 10px 2px; font-size: 11.5px; color: var(--ink-3); letter-spacing: .02em; }
+
+/* נוסח */
+.text {
+  min-width: 0;
+  padding: 26px 28px 30px;
+  border-radius: var(--r-card);
+  background: linear-gradient(178deg, var(--surface) 0%, var(--surface-2) 100%);
+  box-shadow: -3px -3px 8px var(--sh-light), 4px 6px 16px var(--sh-dark), inset 0 1px 0 var(--hi-edge);
+}
+.crumb { font-size: 12.5px; color: var(--ink-3); margin-block-end: 6px; }
+.text h2 { margin: 0 0 18px; font-weight: var(--w-mid); font-size: 24px; line-height: 1.3; text-wrap: balance; }
+.rule { display: grid; grid-template-columns: 5.2em minmax(0, 1fr); gap: 12px; padding-block: 14px; border-radius: 10px; }
+.rule + .rule { border-top: 1px solid var(--rule); }
+.rule .num { direction: ltr; text-align: right; color: var(--ink-3); font-size: 13px; padding-top: 3px; font-variant-numeric: tabular-nums; }
+.rule.active .num { color: var(--ink); font-weight: var(--w-strong); }
+.rule h3 { margin: 0 0 6px; font-weight: var(--w-mid); font-size: 17px; }
+.rule p { margin: 0 0 8px; max-width: var(--measure); color: var(--ink-2); }
+.rule .kind { font-size: 11.5px; color: var(--ink-3); letter-spacing: .02em; }
+.pending { color: var(--ink-3); font-size: 13.5px; }
+.pending a, .src a { color: var(--ink-2); text-underline-offset: 3px; }
+.src { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
+
+.val {
+  font-weight: var(--w-strong); color: var(--ink);
+  border-radius: 5px; padding: 0 4px; margin-inline: 1px;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  box-shadow: -1px -1px 2px var(--sh-light), 1px 2px 4px var(--sh-dark);
+  cursor: pointer; white-space: nowrap; direction: rtl; unicode-bidi: isolate;
+  transition: background .15s, color .15s;
+}
+.val.limit { color: var(--limit); }
+.val:hover, .val.on { background: var(--chip-bg); color: var(--chip-fg); box-shadow: none; }
+.verify {
+  font-size: 10.5px; color: var(--ink-3); border: 1px dashed var(--ink-4); border-radius: 4px;
+  padding: 0 4px; margin-inline-start: 2px; vertical-align: 1px; white-space: nowrap;
+}
+.flash { animation: flash 1.2s ease-out; }
+@keyframes flash { 0%, 30% { background: var(--hit); } 100% { background: transparent; } }
+
+/* גיליון */
+.sheet {
+  min-width: 0; position: sticky; top: 132px;
+  border-radius: var(--r-card); overflow: hidden;
+  background: linear-gradient(180deg, var(--sheet-top) 0%, var(--sheet-bottom) 100%);
+  box-shadow: -3px -3px 10px var(--sh-light), 6px 10px 26px var(--sh-deep), inset 0 1px 0 var(--hi-edge);
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  height: calc(100vh - 150px); min-height: 420px;
+}
+.sheet-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 16px 6px; }
+.sheet-head h3 { margin: 0; font-weight: var(--w-mid); font-size: 16px; }
+.seg {
+  display: inline-flex; padding: 3px; border-radius: 10px; gap: 2px;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: inset 2px 2px 5px var(--sh-dark), inset -2px -2px 4px var(--sh-light);
+}
+.seg button { border: 0; background: none; cursor: pointer; padding: 5px 12px; border-radius: 7px; font-size: 13px; color: var(--ink-3); }
+.seg button[aria-pressed="true"] {
+  color: var(--ink); font-weight: var(--w-mid);
+  background: linear-gradient(160deg, var(--surface), var(--surface-2));
+  box-shadow: 1px 2px 5px var(--sh-dark), inset 0 1px 0 var(--hi-edge);
+}
+.stage { position: relative; min-height: 0; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.dim-label {
+  position: absolute; left: 0; top: 0; pointer-events: auto; cursor: pointer;
+  transform: translate(-50%, -50%);
+  font-size: 12px; font-weight: var(--w-mid); white-space: nowrap; direction: rtl;
+  padding: 1px 6px; border-radius: 5px; color: var(--ink-2);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  box-shadow: 0 1px 4px var(--sh-dark);
+  transition: background .15s, color .15s, opacity .3s;
+}
+.dim-label.limit { color: var(--limit); }
+.dim-label.desc { font-weight: var(--w-thin); color: var(--ink-3); box-shadow: none; background: transparent; }
+.dim-label.on { background: var(--chip-bg); color: var(--chip-fg); box-shadow: 0 2px 8px var(--sh-deep); }
+.dim-label.hidden { opacity: 0; }
+.nav3d { position: absolute; inset-inline-start: 12px; bottom: 12px; display: flex; gap: 6px; }
+.nav3d .btn { padding: 5px 10px; font-size: 12.5px; }
+.empty-stage { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 10px; padding: 24px; color: var(--ink-3); }
+.empty-stage strong { color: var(--ink-2); font-weight: var(--w-mid); }
+.empty-stage .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.titleblock {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--rule); font-size: 12px;
+  background: linear-gradient(180deg, transparent, var(--sh-light));
+}
+.titleblock div { padding: 7px 12px; border-inline-start: 1px solid var(--rule); min-width: 0; }
+.titleblock div:first-child { border-inline-start: 0; }
+.titleblock span { display: block; color: var(--ink-3); font-size: 11px; }
+.titleblock b { font-weight: var(--w-mid); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 1100px) {
+  .main { grid-template-columns: var(--index-w) minmax(0, 1fr); }
+  .sheet { grid-column: 1 / -1; grid-row: 1; position: relative; top: 0; height: 58vh; }
+  .index { max-height: none; }
+}
+@media (max-width: 760px) {
+  .top { grid-template-columns: 1fr; gap: 10px; position: static; }
+  .search { justify-self: stretch; }
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .index { position: static; order: 3; }
+  .sheet { height: 56vh; min-height: 340px; }
+  .text { padding: 20px 16px; }
+  .rule { grid-template-columns: 1fr; gap: 2px; }
+  .rule .num { text-align: start; direction: rtl; }
+  .titleblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .titleblock div:nth-child(3) { border-inline-start: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="app" dir="rtl" lang="he">
+  <header class="top">
+    <div class="brand">
+      <h1>תקנות במרחב</h1>
+      <p>התוספת השנייה לתקנות התכנון והבנייה (בקשה להיתר, תנאיו ואגרות), תש״ל־1970</p>
+    </div>
+    <div class="search" role="search">
+      <div class="search-box">
+        <input id="q" type="search" autocomplete="off" placeholder="חיפוש לפי מילה או מספר סעיף, למשל: מעקה, 3.2.2.5" aria-label="חיפוש בתקנות" aria-controls="results" aria-expanded="false">
+        <span class="count" id="count"></span>
+      </div>
+      <ul class="results" id="results" role="listbox" hidden></ul>
+    </div>
+    <div class="tools">
+      <button class="btn" id="themeBtn" type="button">תצוגה כהה</button>
+    </div>
+    <p class="notice"><strong>גרסת MVP.</strong> מבנה הסעיפים וכותרותיהם לפי נבו. התמציות נכתבו לעבודה ואינן הנוסח, והערכים המסומנים ״לאימות״ טעונים בדיקה מול הנוסח הרשמי לפני כל שימוש.</p>
+  </header>
+
+  <main class="main">
+    <nav class="index" id="index" aria-label="תוכן עניינים"></nav>
+
+    <article class="text" id="text" aria-live="polite"></article>
+
+    <section class="sheet" aria-label="גיליון המחשה">
+      <div class="sheet-head">
+        <h3 id="sceneTitle">המחשה</h3>
+        <div class="seg" role="group" aria-label="תצוגה">
+          <button type="button" data-view="plan" aria-pressed="false">תכנית</button>
+          <button type="button" data-view="section" aria-pressed="false">חתך</button>
+          <button type="button" data-view="axon" aria-pressed="true">אקסונומטריה</button>
+        </div>
+      </div>
+      <div class="stage" id="stage">
+        <canvas id="canvas" aria-hidden="true"></canvas>
+        <div class="labels" id="labels"></div>
+        <div class="empty-stage" id="emptyStage" hidden></div>
+        <div class="nav3d">
+          <button class="btn" type="button" id="resetBtn">חזרה לתצוגת המוצא</button>
+        </div>
+      </div>
+      <div class="titleblock" id="titleblock"></div>
+      <table class="sr-only" id="dimTable"></table>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+'use strict';
+
+/* ---------- נתונים: מקור האמת היחיד. כל מספר במודל ובנוסח נקרא מכאן ---------- */
+const NEVO = 'https://www.nevo.co.il/law_html/law01/044_046.htm';
+
+// verified:false = הערך לא נבדק מול הנוסח הרשמי
+const PARAMS = {
+  room_height_min:   { op: '>=', v: 2.50, u: 'm',   label: 'גובה חדר מגורים',            rule: '2.03', verified: false },
+  room_width_min:    { op: '>=', v: 2.50, u: 'm',   label: 'רוחב בין קירות',             rule: '2.04', verified: false },
+  room_area_min:     { op: '>=', v: 8,    u: 'm2',  label: 'שטח חדר מגורים',             rule: '2.04', verified: false },
+  window_ratio_min:  { op: '>=', v: 0.10, u: 'ratio', label: 'שטח חלון ביחס לשטח הרצפה', rule: '2.21', verified: false },
+  balcony_ratio_max: { op: '<=', v: 0.40, u: 'ratio', label: 'בליטת מרפסת מתוך המרווח',  rule: '4.03', verified: false },
+  balcony_abs_max:   { op: '<=', v: 2.00, u: 'm',   label: 'בליטת מרפסת, לכל היותר',     rule: '4.03', verified: false },
+  riser_max:         { op: '<=', v: 0.175, u: 'm',  label: 'רום מדרגה',                  rule: '3.2.2.5', verified: false },
+  tread_min:         { op: '>=', v: 0.26, u: 'm',   label: 'שלח מדרגה',                  rule: '3.2.2.5', verified: false },
+  headroom_min:      { op: '>=', v: 2.05, u: 'm',   label: 'גובה מזקף ראש',              rule: '3.2.2.4', verified: false },
+  steps_per_flight_max: { op: '<=', v: 18, u: 'count', label: 'מדרגות במהלך אחד',       rule: '3.2.2.6', verified: false },
+  railing_height_min:{ op: '>=', v: 1.05, u: 'm',   label: 'גובה מעקה',                  rule: '3.2.2.14', verified: false },
+  door_width_min:    { op: '>=', v: 0.80, u: 'm',   label: 'רוחב פתח פנוי',              rule: '3.2.1.3', verified: false },
+  door_height_min:   { op: '>=', v: 2.00, u: 'm',   label: 'גובה דלת',                   rule: '3.2.1.4', verified: false },
+  walk_max:          { op: '<=', v: 20,   u: 'm',   label: 'מרחק הליכה',                 rule: '3.2.15.9', verified: false }
+};
+
+// גיאומטריית רקע בלבד (לא ערכים רגולטוריים)
+const FIX = {
+  plotDepth: 12, setback: 4.0, buildingDepth: 9, buildingWidth: 10, floorH: 3.0, floors: 3,
+  roomLength: 4.2, slab: 0.25, windowSill: 0.9, windowH: 1.2,
+  personH: 1.70, flightSteps: 12, corridorW: 1.6, aptDepth: 7.5, aptW: 6.0, apts: 4, stairW: 3.0
+};
+
+const RULES = {
+  '2.03': { scene: 'room', kind: 'דרישה מדידה',
+    title: 'גובה מינימלי של חלקי בנין',
+    body: ['גובה חדר מגורים, מפני הרצפה ועד פני התקרה, לא יפחת מ־{room_height_min}.', 'לחלקי בניין אחרים, כמו חדרי שירות ומרתפים, נקבעים גבהים נפרדים בסעיף. יש לבדוק בנוסח.'],
+    kw: ['גובה', 'תקרה', 'חדר', 'דירה', 'גובה קומה', 'גובה חדר'] },
+  '2.04': { scene: 'room', kind: 'דרישה מדידה',
+    title: 'שטח מינימלי של חלקי בנין ורוחב מינימלי בין קירות',
+    body: ['שטח רצפת חדר מגורים לא יפחת מ־{room_area_min}, והמרחק בין קירות מקבילים לא יפחת מ־{room_width_min}.', 'הסעיף כולל טבלה לפי סוג החדר. התמצית מציגה שורה אחת בלבד.'],
+    kw: ['שטח', 'רוחב', 'חדר', 'קירות', 'מידות חדר', 'מינימום'] },
+  '2.21': { scene: 'window', kind: 'דרישה מדידה',
+    title: 'גודל חלונות בדירה',
+    body: ['שטח החלונות בחדר מגורים לא יפחת מ־{window_ratio_min} משטח רצפת החדר.', 'המודל מחשב את שטח החלון הנדרש מתוך שטח רצפה לדוגמה.'],
+    kw: ['חלון', 'חלונות', 'תאורה', 'אור', 'איוור', 'פתח'] },
+  '4.03': { scene: 'balcony', kind: 'מגבלה מדידה',
+    title: 'בליטות המותרות מבנין',
+    body: ['מרפסת זיזית רשאית לבלוט מעבר לקו הבניין אל המרווח עד {balcony_ratio_max} מרוחב המרווח, ובלבד שלא תעלה על {balcony_abs_max}.', 'הסעיף מונה בליטות נוספות (כרכובים, גגונים, אדניות). בגרסה זו מוצגת המרפסת בלבד.'],
+    kw: ['מרפסת', 'בליטה', 'זיזית', 'מרווח', 'קו בניין', 'חזית'] },
+  '3.2.2.5': { scene: 'stairs', kind: 'דרישה מדידה',
+    title: 'מידות רום ושלח מדרגה',
+    body: ['רום המדרגה (הגובה) לא יעלה על {riser_max}, ושלח המדרגה (העומק) לא יפחת מ־{tread_min}.', 'הסעיף קובע גם יחס בין הרום לשלח ומידות לפי סוג הבניין. יש לבדוק בנוסח.'],
+    kw: ['מדרגה', 'מדרגות', 'רום', 'שלח', 'גובה מדרגה', 'עומק מדרגה'] },
+  '3.2.2.4': { scene: 'stairs', kind: 'דרישה מדידה',
+    title: 'גובה מזקף ראש מעל מדרגות',
+    body: ['הגובה הפנוי מעל קו אפי המדרגות לא יפחת מ־{headroom_min}.'],
+    kw: ['מזקף ראש', 'גובה פנוי', 'מדרגות', 'תקרה'] },
+  '3.2.2.6': { scene: 'stairs', kind: 'מגבלה מדידה',
+    title: 'מספר המדרגות במהלך אחד',
+    body: ['מספר המדרגות במהלך אחד, בין שני משטחים אופקיים, לא יעלה על {steps_per_flight_max}.'],
+    kw: ['מהלך', 'מדרגות', 'משטח ביניים', 'פודסט'] },
+  '3.2.2.14': { scene: 'railing', kind: 'דרישה מדידה',
+    title: 'מעקה, מסעד ובית אחיזה',
+    body: ['גובה המעקה, הנמדד מפני הרצפה או מקו אפי המדרגות, לא יפחת מ־{railing_height_min}.', 'הסעיף מפרט גם את בית האחיזה ואת המרווחים בין חלקי המעקה.'],
+    kw: ['מעקה', 'מסעד', 'בית אחיזה', 'נפילה', 'גובה מעקה'] },
+  '3.2.1.3': { scene: 'door', kind: 'דרישה מדידה',
+    title: 'רוחב הפתח המינימלי של דלתות',
+    body: ['רוחב הפתח הפנוי של דלת בדרך מוצא לא יפחת מ־{door_width_min}.', 'המדידה היא של המעבר הפנוי ולא של כנף הדלת. אופן המדידה בסעיף 3.2.1.2.'],
+    kw: ['דלת', 'דלתות', 'פתח', 'רוחב', 'מוצא', 'יציאה'] },
+  '3.2.1.4': { scene: 'door', kind: 'דרישה מדידה',
+    title: 'גובה הדלת',
+    body: ['גובה הפתח הפנוי של הדלת לא יפחת מ־{door_height_min}.'],
+    kw: ['דלת', 'גובה דלת', 'משקוף'] },
+  '3.2.15.9': { scene: 'walking', kind: 'מגבלה מדידה',
+    title: 'מרחק הליכה בבניין מגורים',
+    body: ['מרחק ההליכה מדלת הדירה הרחוקה ועד הכניסה לדרך מוצא בטוח לא יעלה על {walk_max}.', 'המרחק נמדד לאורך מסלול ההליכה בפועל ולא בקו אווירי (סעיף 3.2.15.5). המודל מודד את המסלול ומשווה למגבלה.'],
+    kw: ['מרחק הליכה', 'מוצא', 'מילוט', 'חדר מדרגות', 'פרוזדור', 'בטיחות אש'] }
+};
+
+const SCENES = {
+  room:    { title: 'חדר מגורים: גובה, שטח ורוחב', rules: ['2.03', '2.04'] },
+  window:  { title: 'חלון ושטח רצפה',              rules: ['2.21'] },
+  balcony: { title: 'מרפסת בולטת אל המרווח',        rules: ['4.03'] },
+  stairs:  { title: 'מהלך מדרגות',                  rules: ['3.2.2.5', '3.2.2.4', '3.2.2.6'] },
+  railing: { title: 'מעקה במשטח ובמדרגות',          rules: ['3.2.2.14'] },
+  door:    { title: 'פתח דלת בדרך מוצא',             rules: ['3.2.1.3', '3.2.1.4'] },
+  walking: { title: 'מרחק הליכה בקומת מגורים',       rules: ['3.2.15.9'] }
+};
+
+// מבנה הסעיפים וכותרותיהם, לפי תוכן העניינים בנבו
+const PARTS = [
+  { n: "חלק א'", t: 'מיתקני תברואה', items: [
+    ['1.14', 'סידורים תברואיים'], ['1.15', 'בית שימוש בבנין ציבורי'] ] },
+  { n: "חלק ב'", t: 'גדלם, איוורם ותאורתם של חלקי בנין', items: [
+    ['g', 'סימן ב׳: גדלם של חלקי בנין'],
+    ['2.03', 'גובה מינימלי של חלקי בנין'], ['2.04', 'שטח מינימלי של חלקי בנין ורוחב מינימלי בין קירות'],
+    ['2.06', 'רוחב מינימלי של חנות'], ['2.07', 'גובה מקסימלי של חנות באזור מגורים'], ['2.08', 'יציע בחנות'],
+    ['2.09', 'יציע בדירה'], ['2.10', 'דירת מרתף'], ['2.11', 'חצר חיצונית פתוחה'],
+    ['g', 'סימן ג׳: חלונות'],
+    ['2.20', 'אמצעי איוור ותאורה'], ['2.21', 'גודל חלונות בדירה'], ['2.22', 'גודל חלון המופנה למרפסת או למטבח'],
+    ['2.23', 'איסור בניית חלון בקירות מסויימים'], ['2.24', 'חלון הפונה לחצר פנימית בחדר מגורים'],
+    ['2.25', 'חלון הפונה לחצר פנימית במטבח או בחדר שירות'], ['2.27', 'תאורה ואיוור מרתף'],
+    ['g', 'סימן ד׳ עד ז׳: איוור, תאורה ופתחים'],
+    ['2.40', 'אמצעי איוור'], ['2.47', 'מספר החלפות אוויר לשעה בחדר שירות'], ['2.85', 'פתחי איוור בחדר מדרגות'],
+    ['2.91', 'דלת'], ['2.92', 'אמצעי נעילה'] ] },
+  { n: "חלק ג'", t: 'בטיחות אש בבניינים', items: [
+    ['g', 'פרק ב׳ סימן א׳: דלתות'],
+    ['3.2.1.3', 'רוחב הפתח המינימלי של דלתות'], ['3.2.1.4', 'גובה הדלת'], ['3.2.1.6', 'כיוון ואופן פתיחה של דלת'],
+    ['g', 'פרק ב׳ סימן ב׳: מדרגות'],
+    ['3.2.2.2', 'רוחב של מדרגות'], ['3.2.2.4', 'גובה מזקף ראש מעל מדרגות'], ['3.2.2.5', 'מידות רום ושלח מדרגה'],
+    ['3.2.2.6', 'מספר המדרגות במהלך אחד'], ['3.2.2.10', 'משטח אופקי בחדר מדרגות'], ['3.2.2.14', 'מעקה, מסעד ובית אחיזה'],
+    ['3.2.2.19', 'מדרגות בדירה בבניין מגורים'], ['3.2.3.1', 'חדר מדרגות מוגן'],
+    ['g', 'פרק ב׳: תפוסה, דרכי מוצא ומרחקי הליכה'],
+    ['3.2.10.2', 'מידות כבש'], ['3.2.12.1', 'חישוב תפוסה'], ['3.2.12.2', 'מקדמי תפוסה'],
+    ['3.2.13.3', 'מספר דרכי מוצא מקומה'], ['3.2.15.1', 'מרחקי הליכה בבניין'], ['3.2.15.2', 'פרוזדור ללא מוצא'],
+    ['3.2.15.3', 'מהלך משותף'], ['3.2.15.5', 'אופן מדידת מרחק הליכה ומהלך משותף'], ['3.2.15.9', 'מרחק הליכה בבניין מגורים'],
+    ['g', 'פרק ח׳: מגורים'],
+    ['3.8.2.2', 'גובה מזקף ראש'], ['3.8.5.2', 'מספר המדרגות במהלך אחד'], ['3.8.5.6', 'מעקה ובית אחיזה במהלך ובחדר מדרגות'],
+    ['3.8.18.2', 'מרחק הליכה בדירת מגורים'], ['3.8.30.3', 'תוספת קומה אחת מעל בניין קיים'] ] },
+  { n: "חלק ד'", t: 'בניה במרווחים ומעבר לקו רחוב', items: [
+    ['4.01', 'הגדרות'], ['4.02', 'תחולה'], ['4.03', 'בליטות המותרות מבנין'], ['4.04', 'הבטחת מראה הרחוב ומעבר תשתיות'],
+    ['4.05', 'בליטות מעבר לקו מגרש'], ['4.06', 'הבלטת יסוד בנין'], ['4.07', 'איסור הקמת תמיכות ועמודים'],
+    ['4.08', 'תנאים נוספים להבלטת גגון או סוכך'], ['4.09', 'בניה מותרת במרווח'] ] },
+  { n: "חלק ח'1", t: 'נגישות בבניין ציבורי חדש', items: [
+    ['8.50', 'דרך נגישה לבניין ציבורי'], ['8.55', 'כניסה לבניין ציבורי חדש'], ['8.110', 'הקצאת מקומות חניה נגישים'],
+    ['8.120', 'מעלית לשימוש הציבור'], ['8.140', 'בתי שימוש נגישים'] ] }
+];
+
+const SECTIONS = {};
+PARTS.forEach(function (p) {
+  p.items.forEach(function (it) {
+    if (it[0] === 'g') return;
+    SECTIONS[it[0]] = { ref: it[0], title: it[1], part: p };
+  });
+});
+
+const SYN = [
+  ['מעקה', 'מסעד', 'בית אחיזה'], ['מדרגות', 'מדרגה', 'רום', 'שלח', 'מהלך'], ['מרפסת', 'בליטה', 'זיזית'],
+  ['חלון', 'חלונות', 'פתח', 'איוור', 'תאורה'], ['גובה', 'תקרה'], ['דלת', 'דלתות', 'יציאה'],
+  ['מילוט', 'מוצא', 'בטיחות אש', 'אש'], ['נגישות', 'נכים', 'כבש'], ['מרווח', 'קו בניין', 'קו בנין']
+];
+
+/* ---------- עזרי פורמט ---------- */
+function fmt(key) {
+  const p = PARAMS[key];
+  if (!p) return '?';
+  let s;
+  if (p.u === 'm') s = (p.v < 1 ? (p.v * 100).toFixed(p.v * 100 % 1 ? 1 : 0) + ' ס״מ' : p.v.toFixed(2) + ' מ׳');
+  else if (p.u === 'm2') s = p.v + ' מ״ר';
+  else if (p.u === 'ratio') s = Math.round(p.v * 100) + '%';
+  else s = String(p.v);
+  return s;
+}
+function opSign(key) { const o = PARAMS[key].op; return o === '>=' ? '≥' : o === '<=' ? '≤' : o; }
+function isLimit(key) { const o = PARAMS[key].op; return o === '>=' || o === '<=' || o === '<' || o === '>'; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+/* ---------- חיפוש עברי ---------- */
+function norm(s) {
+  return String(s).replace(/[֑-ׇ]/g, '').replace(/[״"׳'`]/g, '')
+    .replace(/ך/g, 'כ').replace(/ם/g, 'מ').replace(/ן/g, 'נ').replace(/ף/g, 'פ').replace(/ץ/g, 'צ')
+    .replace(/יי/g, 'י').replace(/וו/g, 'ו').toLowerCase().trim();
+}
+function variants(tok) {
+  const out = [tok];
+  let t = tok;
+  for (let i = 0; i < 2; i++) {
+    if (t.length > 3 && 'והבלמשכ'.indexOf(t[0]) >= 0) { t = t.slice(1); out.push(t); } else break;
+  }
+  const extra = [];
+  SYN.forEach(function (g) {
+    const ng = g.map(norm);
+    if (out.some(function (v) { return ng.indexOf(v) >= 0; })) ng.forEach(function (x) { extra.push(x); });
+  });
+  return out.concat(extra);
+}
+const DOCS = Object.keys(SECTIONS).map(function (ref) {
+  const s = SECTIONS[ref], r = RULES[ref];
+  const bodyPlain = r ? r.body.join(' ').replace(/\{(\w+)\}/g, function (_, k) { return fmt(k); }) : '';
+  return { ref: ref, title: s.title, part: s.part.n, body: bodyPlain, kw: r ? r.kw.join(' ') : '',
+    nTitle: norm(s.title), nBody: norm(bodyPlain), nKw: r ? norm(r.kw.join(' ')) : '' };
+});
+function wordHit(hay, v) {
+  if (!v) return false;
+  if (v.indexOf(' ') >= 0) return hay.indexOf(v) >= 0;
+  return (' ' + hay).split(/\s+/).some(function (w) { return w.indexOf(v) === 0 || (w.length > 2 && w.slice(1).indexOf(v) === 0 && 'והבלמשכ'.indexOf(w[0]) >= 0); });
+}
+function search(q) {
+  const raw = q.trim();
+  if (!raw) return [];
+  if (/^\d+(\.\d+)*\.?$/.test(raw)) {
+    const p = raw.replace(/\.$/, '');
+    return DOCS.filter(function (d) { return d.ref === p || d.ref.indexOf(p + '.') === 0 || d.ref.indexOf(p) === 0; })
+      .map(function (d) { return { d: d, score: d.ref === p ? 100 : 50, terms: [] }; });
+  }
+  const toks = norm(raw).split(/\s+/).filter(Boolean);
+  const phrase = norm(raw);
+  const res = [];
+  DOCS.forEach(function (d) {
+    let score = 0, all = true;
+    toks.forEach(function (t) {
+      const vs = variants(t);
+      let s = 0;
+      vs.forEach(function (v, i) {
+        const w = i === 0 ? 1 : .7;
+        if (wordHit(d.nTitle, v)) s = Math.max(s, 10 * w);
+        else if (wordHit(d.nKw, v)) s = Math.max(s, 7 * w);
+        else if (wordHit(d.nBody, v)) s = Math.max(s, 4 * w);
+      });
+      if (!s) all = false;
+      score += s;
+    });
+    if (toks.length > 1 && d.nTitle.indexOf(phrase) >= 0) score += 15;
+    if (all && score) res.push({ d: d, score: score + (RULES[d.ref] ? 1 : 0), terms: toks });
+  });
+  return res.sort(function (a, b) { return b.score - a.score; });
+}
+function highlight(text, terms) {
+  if (!terms || !terms.length) return esc(text);
+  // מסמן מילים שתחילתן (אחרי תחילית) תואמת אחד המונחים
+  return text.split(/(\s+)/).map(function (w) {
+    if (/^\s+$/.test(w)) return w;
+    const nw = norm(w);
+    const hit = terms.some(function (t) {
+      return variants(t).some(function (v) { return v.indexOf(' ') < 0 && v.length > 1 && (nw.indexOf(v) === 0 || (nw.length > 2 && 'והבלמשכ'.indexOf(nw[0]) >= 0 && nw.slice(1).indexOf(v) === 0)); });
+    });
+    return hit ? '<mark>' + esc(w) + '</mark>' : esc(w);
+  }).join('');
+}
+
+/* ---------- מצב ---------- */
+let current = null;      // ref
+let currentScene = null; // scene id
+let view = 'axon';
+let lastTerms = [];
+
+/* ---------- תוכן עניינים ---------- */
+const indexEl = document.getElementById('index');
+function buildIndex() {
+  let html = '';
+  PARTS.forEach(function (p, pi) {
+    const open = p.items.some(function (it) { return RULES[it[0]]; });
+    html += '<details' + (open ? ' open' : '') + '><summary><span>' + esc(p.t) + '</span><span class="part-n">' + esc(p.n) + '</span></summary><ul>';
+    p.items.forEach(function (it) {
+      if (it[0] === 'g') { html += '<li class="group-label">' + esc(it[1]) + '</li>'; return; }
+      const r = RULES[it[0]];
+      html += '<li><button type="button" data-ref="' + it[0] + '"><span class="ref">' + it[0] + '</span><span>' + esc(it[1]) + '</span>' +
+        (r ? '<span class="has3d" title="יש המחשה">3D</span>' : '<span></span>') + '</button></li>';
+    });
+    html += '</ul></details>';
+  });
+  indexEl.innerHTML = html;
+  indexEl.addEventListener('click', function (e) {
+    const b = e.target.closest('button[data-ref]');
+    if (b) go(b.dataset.ref);
+  });
+}
+function markIndex() {
+  indexEl.querySelectorAll('button[data-ref]').forEach(function (b) {
+    const on = b.dataset.ref === current;
+    b.setAttribute('aria-current', on ? 'true' : 'false');
+    if (on) { const d = b.closest('details'); if (d) d.open = true; b.scrollIntoView({ block: 'nearest' }); }
+  });
+}
+
+/* ---------- נוסח ---------- */
+const textEl = document.getElementById('text');
+function renderBody(str, terms) {
+  // מפצל לפי {key}, ממרקר את הטקסט ומכניס ערכים מקושרים
+  return str.split(/(\{\w+\})/).map(function (part) {
+    const m = part.match(/^\{(\w+)\}$/);
+    if (!m) return highlight(part, terms);
+    const k = m[1], p = PARAMS[k];
+    return '<span class="val' + (isLimit(k) ? ' limit' : '') + '" tabindex="0" role="button" data-key="' + k + '" title="' + esc(p.label) + ': סימון במודל">' +
+      fmt(k) + '</span>' + (p.verified ? '' : '<span class="verify" title="הערך טרם נבדק מול הנוסח הרשמי">לאימות</span>');
+  }).join('');
+}
+function renderText() {
+  const s = SECTIONS[current];
+  const r = RULES[current];
+  let html = '<div class="crumb">' + esc(s.part.n) + ', ' + esc(s.part.t) + '</div>';
+  if (r) {
+    const sc = SCENES[r.scene];
+    html += '<h2>' + esc(sc.title) + '</h2>';
+    sc.rules.forEach(function (ref) {
+      const rr = RULES[ref], ss = SECTIONS[ref];
+      html += '<section class="rule' + (ref === current ? ' active' : '') + '" id="rule-' + ref.replace(/\./g, '-') + '">' +
+        '<div class="num">' + ref + '</div><div><h3>' + highlight(ss.title, lastTerms) + '</h3>' +
+        '<div class="kind">' + esc(rr.kind) + ', תמצית לעבודה</div>' +
+        rr.body.map(function (b) { return '<p>' + renderBody(b, lastTerms) + '</p>'; }).join('') +
+        '<div class="src">הנוסח המחייב: <a href="' + NEVO + '" target="_blank" rel="noopener">תקנה ' + ref + ' בנבו</a></div></div></section>';
+    });
+  } else {
+    html += '<h2>' + highlight(s.title, lastTerms) + '</h2>' +
+      '<section class="rule active"><div class="num">' + s.ref + '</div><div>' +
+      '<p class="pending">התמצית והערכים של סעיף זה טרם הוזנו. הנוסח המחייב: <a href="' + NEVO + '" target="_blank" rel="noopener">תקנה ' + s.ref + ' בנבו</a>.</p></div></section>';
+  }
+  textEl.innerHTML = html;
+  const act = textEl.querySelector('.rule.active');
+  if (act && r && SCENES[r.scene].rules[0] !== current) act.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+textEl.addEventListener('mouseover', function (e) { const v = e.target.closest('.val'); if (v) setActiveKey(v.dataset.key); });
+textEl.addEventListener('mouseout', function (e) { const v = e.target.closest('.val'); if (v) setActiveKey(null); });
+textEl.addEventListener('focusin', function (e) { const v = e.target.closest('.val'); if (v) setActiveKey(v.dataset.key); });
+textEl.addEventListener('focusout', function (e) { const v = e.target.closest('.val'); if (v) setActiveKey(null); });
+textEl.addEventListener('click', function (e) { const v = e.target.closest('.val'); if (v) { setActiveKey(v.dataset.key, true); } });
+
+/* ---------- ניווט ---------- */
+function go(ref, keepTerms) {
+  if (!SECTIONS[ref]) return;
+  if (!keepTerms) lastTerms = [];
+  current = ref;
+  renderText();
+  markIndex();
+  const r = RULES[ref];
+  loadScene(r ? r.scene : null);
+  try { history.replaceState(null, '', '#s' + ref.replace(/\./g, '-')); } catch (e) {}
+  updateTitleBlock();
+}
+function fromHash() {
+  const h = (location.hash || '').replace(/^#s/, '').replace(/-/g, '.');
+  return SECTIONS[h] ? h : null;
+}
+
+/* ---------- חיפוש: ממשק ---------- */
+const qEl = document.getElementById('q'), resEl = document.getElementById('results'), countEl = document.getElementById('count');
+let hits = [], sel = -1;
+function showResults() {
+  const q = qEl.value;
+  hits = search(q).slice(0, 14);
+  sel = hits.length ? 0 : -1;
+  if (!q.trim()) { resEl.hidden = true; countEl.textContent = ''; qEl.setAttribute('aria-expanded', 'false'); return; }
+  countEl.textContent = hits.length ? hits.length + ' סעיפים' : '';
+  if (!hits.length) {
+    resEl.innerHTML = '<li class="empty">לא נמצא סעיף עבור ״' + esc(q) + '״. נסו: מעקה, מדרגות, מרפסת, חלון, מרחק הליכה.</li>';
+  } else {
+    resEl.innerHTML = hits.map(function (h, i) {
+      const snip = h.d.body ? h.d.body.slice(0, 110) + (h.d.body.length > 110 ? '…' : '') : h.d.part;
+      return '<li role="option" data-ref="' + h.d.ref + '" aria-selected="' + (i === sel) + '"><span class="r-ref">' + h.d.ref + '</span>' +
+        '<span class="r-title">' + highlight(h.d.title, h.terms) + '</span><span class="r-snip">' + highlight(snip, h.terms) + '</span></li>';
+    }).join('');
+  }
+  resEl.hidden = false; qEl.setAttribute('aria-expanded', 'true');
+}
+function pick(i) {
+  const h = hits[i]; if (!h) return;
+  lastTerms = h.terms;
+  resEl.hidden = true; qEl.setAttribute('aria-expanded', 'false');
+  go(h.d.ref, true);
+}
+qEl.addEventListener('input', showResults);
+qEl.addEventListener('focus', function () { if (qEl.value.trim()) showResults(); });
+qEl.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (!hits.length) return;
+    e.preventDefault();
+    sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + hits.length) % hits.length;
+    resEl.querySelectorAll('li[role="option"]').forEach(function (li, i) { li.setAttribute('aria-selected', i === sel); if (i === sel) li.scrollIntoView({ block: 'nearest' }); });
+  } else if (e.key === 'Enter') { e.preventDefault(); if (sel >= 0) pick(sel); }
+  else if (e.key === 'Escape') { resEl.hidden = true; }
+});
+resEl.addEventListener('mousedown', function (e) { const li = e.target.closest('li[data-ref]'); if (li) { e.preventDefault(); pick(hits.findIndex(function (h) { return h.d.ref === li.dataset.ref; })); } });
+document.addEventListener('click', function (e) { if (!e.target.closest('.search')) resEl.hidden = true; });
+
+/* ---------- ערכת נושא ---------- */
+const themeBtn = document.getElementById('themeBtn');
+function isDark() {
+  const t = document.documentElement.getAttribute('data-theme');
+  if (t) return t === 'dark';
+  return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+}
+function syncThemeBtn() { themeBtn.textContent = isDark() ? 'תצוגה בהירה' : 'תצוגה כהה'; }
+themeBtn.addEventListener('click', function () {
+  document.documentElement.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+  syncThemeBtn(); if (currentScene) loadScene(currentScene, true);
+});
+if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { syncThemeBtn(); if (currentScene) loadScene(currentScene, true); });
+
+/* ---------- תלת־ממד ---------- */
+const stage = document.getElementById('stage'), canvas = document.getElementById('canvas'), labelsEl = document.getElementById('labels');
+const emptyEl = document.getElementById('emptyStage');
+const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer, scene3, camera, controls, dims = [], growers = [], frame = 0, bounds = null, activeKey = null;
+const has3D = typeof THREE !== 'undefined';
+
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888'; }
+function col(n) { return new THREE.Color(cssVar(n)); }
+
+function init3D() {
+  if (!has3D) return;
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  camera = new THREE.OrthographicCamera(-10, 10, 10, -10, -200, 400);
+  if (THREE.OrbitControls) {
+    controls = new THREE.OrbitControls(camera, canvas);
+    controls.enableDamping = !reduce; controls.dampingFactor = .12;
+    controls.screenSpacePanning = true;
+  }
+  new ResizeObserver(resize).observe(stage);
+  resize();
+  requestAnimationFrame(tick);
+}
+function resize() {
+  if (!renderer) return;
+  const w = stage.clientWidth, h = stage.clientHeight;
+  if (!w || !h) return;
+  renderer.setSize(w, h, false);
+  fitCamera(false);
+}
+function fitCamera(resetPos) {
+  if (!camera || !bounds) return;
+  const w = stage.clientWidth || 1, h = stage.clientHeight || 1, aspect = w / h;
+  const size = bounds.getSize(new THREE.Vector3()), c = bounds.getCenter(new THREE.Vector3());
+  let span;
+  if (view === 'plan') span = Math.max(size.x / aspect, size.z) * .62;
+  else if (view === 'section') span = Math.max(size.x / aspect, size.y) * .62;
+  else span = Math.max(size.length() / aspect, size.length() * .78) * .5;
+  span = Math.max(span, 1.5);
+  if (resetPos !== false || !camera.userData.zoomed) {
+    camera.left = -span * aspect; camera.right = span * aspect; camera.top = span; camera.bottom = -span;
+  }
+  if (resetPos) {
+    const d = 60;
+    if (view === 'plan') { camera.position.set(c.x, c.y + d, c.z + .001); camera.up.set(0, 0, -1); }
+    else if (view === 'section') { camera.position.set(c.x, c.y, c.z + d); camera.up.set(0, 1, 0); }
+    else { camera.position.set(c.x - d * .62, c.y + d * .52, c.z + d * .62); camera.up.set(0, 1, 0); }
+    camera.zoom = 1;
+    if (controls) { controls.target.copy(c); controls.enableRotate = view === 'axon'; controls.update(); }
+    camera.lookAt(c);
+  }
+  camera.updateProjectionMatrix();
+}
+
+function clearScene() {
+  dims = []; growers = [];
+  labelsEl.innerHTML = '';
+  if (!scene3) return;
+  scene3.traverse(function (o) { if (o.geometry) o.geometry.dispose(); if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (m) { m.dispose(); }); });
+}
+
+// --- primitives ---
+let MAT;
+function makeMats() {
+  MAT = {
+    mass: new THREE.MeshStandardMaterial({ color: col('--model-mass'), roughness: .92, metalness: 0 }),
+    massSoft: new THREE.MeshStandardMaterial({ color: col('--model-mass'), roughness: .95, transparent: true, opacity: .42, depthWrite: false }),
+    accent: new THREE.MeshStandardMaterial({ color: col('--model-accent'), roughness: .7 }),
+    glass: new THREE.MeshStandardMaterial({ color: col('--ink-4'), roughness: .1, metalness: .1, transparent: true, opacity: .38 }),
+    ground: new THREE.MeshStandardMaterial({ color: col('--model-ground'), roughness: 1 }),
+    edge: new THREE.LineBasicMaterial({ color: col('--model-edge'), transparent: true, opacity: .75 }),
+    edgeSoft: new THREE.LineBasicMaterial({ color: col('--model-edge'), transparent: true, opacity: .22 }),
+    dim: new THREE.LineBasicMaterial({ color: col('--ink-3') }),
+    limit: new THREE.LineBasicMaterial({ color: col('--limit') }),
+    on: new THREE.LineBasicMaterial({ color: col('--ink') }),
+    plot: new THREE.LineDashedMaterial({ color: col('--ink-2'), dashSize: .35, gapSize: .2 }),
+    bline: new THREE.LineDashedMaterial({ color: col('--limit'), dashSize: .5, gapSize: .25 }),
+    path: new THREE.LineBasicMaterial({ color: col('--ink') })
+  };
+}
+function box(w, h, d, x, y, z, opts) {
+  opts = opts || {};
+  const g = new THREE.BoxGeometry(w, h, d);
+  g.translate(0, h / 2, 0);
+  const m = new THREE.Mesh(g, opts.mat || MAT.mass);
+  m.position.set(x, y, z);
+  m.castShadow = opts.shadow !== false; m.receiveShadow = true;
+  const e = new THREE.LineSegments(new THREE.EdgesGeometry(g, 30), opts.soft ? MAT.edgeSoft : MAT.edge);
+  m.add(e);
+  scene3.add(m);
+  if (opts.grow !== false) growers.push(m);
+  return m;
+}
+function line(pts, mat, dashed) {
+  const g = new THREE.BufferGeometry().setFromPoints(pts.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
+  const l = new THREE.Line(g, mat);
+  l.userData.base = mat;
+  if (dashed) l.computeLineDistances();
+  scene3.add(l);
+  return l;
+}
+function person(x, z) {
+  const H = FIX.personH, grp = new THREE.Group();
+  const m = MAT.accent;
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(.17, .2, H * .52, 14), m); body.position.y = H * .26 + H * .3; grp.add(body);
+  const legs = new THREE.Mesh(new THREE.CylinderGeometry(.15, .12, H * .44, 12), m); legs.position.y = H * .22; grp.add(legs);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(.12, 16, 12), m); head.position.y = H - .12; grp.add(head);
+  grp.children.forEach(function (c) { c.castShadow = true; });
+  grp.position.set(x, 0, z); scene3.add(grp); growers.push(grp);
+  return grp;
+}
+function label(text, pos, cls, key) {
+  const el = document.createElement('div');
+  el.className = 'dim-label ' + (cls || '');
+  el.textContent = text;
+  if (key) { el.dataset.key = key; el.setAttribute('title', PARAMS[key].label + ', תקנה ' + PARAMS[key].rule); }
+  labelsEl.appendChild(el);
+  const d = { el: el, pos: new THREE.Vector3(pos[0], pos[1], pos[2]), key: key, lines: [] };
+  dims.push(d);
+  return d;
+}
+// מידה: קו עם סימני חיתוך ב־45°, קווי עזר ותווית. key = פרמטר רגולטורי, אחרת מידה תיאורית
+function dim(a, b, off, key, textOverride) {
+  const A = new THREE.Vector3(a[0], a[1], a[2]), B = new THREE.Vector3(b[0], b[1], b[2]), O = new THREE.Vector3(off[0], off[1], off[2]);
+  const A2 = A.clone().add(O), B2 = B.clone().add(O);
+  const lim = key && isLimit(key);
+  const mat = key ? (lim ? MAT.limit : MAT.dim) : MAT.dim;
+  const segs = [];
+  segs.push(line([A2.toArray(), B2.toArray()], mat));
+  if (O.lengthSq() > 0) {
+    const n = O.clone().normalize().multiplyScalar(.12);
+    segs.push(line([A.clone().add(n).toArray(), A2.clone().add(n).toArray()], MAT.dim));
+    segs.push(line([B.clone().add(n).toArray(), B2.clone().add(n).toArray()], MAT.dim));
+  }
+  const dir = B2.clone().sub(A2).normalize();
+  const perp = O.lengthSq() > 0 ? O.clone().normalize() : new THREE.Vector3(0, 1, 0);
+  const t = dir.clone().add(perp).normalize().multiplyScalar(.14);
+  [A2, B2].forEach(function (P) { segs.push(line([P.clone().sub(t).toArray(), P.clone().add(t).toArray()], mat)); });
+  const mid = A2.clone().add(B2).multiplyScalar(.5);
+  const txt = textOverride || (key ? opSign(key) + ' ' + fmt(key) : (A.distanceTo(B)).toFixed(2) + ' מ׳');
+  const d = label(txt, mid.toArray(), key ? (lim ? 'limit' : '') : 'desc', key);
+  d.lines = segs; d.baseMat = mat;
+  return d;
+}
+function ground(w, d, cx, cz) {
+  const g = new THREE.PlaneGeometry(w, d);
+  g.rotateX(-Math.PI / 2);
+  const m = new THREE.Mesh(g, MAT.ground);
+  m.position.set(cx || 0, 0, cz || 0);
+  m.receiveShadow = true;
+  scene3.add(m);
+  return m;
+}
+function lights() {
+  scene3.add(new THREE.HemisphereLight(0xffffff, col('--model-ground'), isDark() ? .55 : .75));
+  const sun = new THREE.DirectionalLight(0xffffff, isDark() ? .7 : .85);
+  sun.position.set(-14, 24, 12);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  const s = sun.shadow.camera; s.left = -25; s.right = 25; s.top = 25; s.bottom = -25; s.near = 1; s.far = 80;
+  sun.shadow.radius = 4; sun.shadow.bias = -.0005;
+  scene3.add(sun);
+}
+
+/* ---------- סצנות: מקבלות ערכים מ־PARAMS בלבד ---------- */
+const P = function (k) { return PARAMS[k].v; };
+const BUILD = {
+  room: function () {
+    const H = P('room_height_min'), W = Math.max(P('room_width_min'), P('room_area_min') / FIX.roomLength), L = FIX.roomLength, t = .2;
+    ground(L + 6, W + 6, 0, 0);
+    box(L + 2 * t, FIX.slab, W + 2 * t, 0, -FIX.slab + .001, 0, { grow: false });
+    box(t, H, W + 2 * t, -L / 2 - t / 2, 0, 0);            // קיר אחורי
+    box(L, H, t, 0, 0, -W / 2 - t / 2);                    // קיר צד
+    box(L + 2 * t, .2, W + 2 * t, 0, H, 0, { mat: MAT.massSoft, soft: true, shadow: false });   // תקרה שקופה
+    person(.6, .4);
+    dim([-L / 2, 0, W / 2], [-L / 2, H, W / 2], [0, 0, .7], 'room_height_min');
+    dim([L / 2, 0, -W / 2], [L / 2, 0, W / 2], [.8, 0, 0], 'room_width_min', opSign('room_width_min') + ' ' + fmt('room_width_min'));
+    dim([-L / 2, 0, W / 2], [L / 2, 0, W / 2], [0, 0, 1.6], null);
+    label(opSign('room_area_min') + ' ' + fmt('room_area_min') + ' שטח רצפה', [0, .05, 0], 'limit', 'room_area_min');
+    return [L + 3, H + 1, W + 4];
+  },
+  window: function () {
+    const A = 12, ratio = P('window_ratio_min'), need = A * ratio, wh = FIX.windowH, ww = need / wh, L = 4, W = A / L, Hh = 2.7, t = .2;
+    ground(L + 6, W + 6, 0, 0);
+    // קיר עם פתח
+    const sill = FIX.windowSill;
+    box(t, sill, W, -L / 2, 0, 0);
+    box(t, Hh - sill - wh, W, -L / 2, sill + wh, 0);
+    box(t, wh, (W - ww) / 2, -L / 2, sill, -(W + ww) / 4 - 0.0);
+    box(t, wh, (W - ww) / 2, -L / 2, sill, (W + ww) / 4);
+    box(.04, wh, ww, -L / 2, sill, 0, { mat: MAT.glass, soft: true, shadow: false });
+    box(L, Hh, t, 0, 0, -W / 2 - t / 2);
+    const fl = new THREE.Mesh(new THREE.PlaneGeometry(L, W).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: col('--model-accent'), transparent: true, opacity: .22 }));
+    fl.position.set(0, .01, 0); scene3.add(fl);
+    label('שטח רצפה לדוגמה ' + A + ' מ״ר', [.4, .05, 0], 'desc');
+    dim([-L / 2, sill, -ww / 2], [-L / 2, sill, ww / 2], [0, -.35, 0], null, ww.toFixed(2) + ' מ׳');
+    dim([-L / 2, sill, ww / 2], [-L / 2, sill + wh, ww / 2], [0, 0, .5], null, wh.toFixed(2) + ' מ׳');
+    label(opSign('window_ratio_min') + ' ' + fmt('window_ratio_min') + ' = ' + need.toFixed(2) + ' מ״ר חלון', [-L / 2 - .1, sill + wh + .45, 0], 'limit', 'window_ratio_min');
+    return [L + 3, Hh + 1, W + 3];
+  },
+  balcony: function () {
+    const S = FIX.setback, Bw = FIX.buildingWidth, Bd = FIX.buildingDepth, H = FIX.floorH, n = FIX.floors;
+    const proj = Math.min(P('balcony_ratio_max') * S, P('balcony_abs_max'));
+    const zPlot = 0, zLine = -S;               // גבול מגרש קדמי ב־z=0, קו בניין ב־z=-S
+    ground(Bw + 10, Bd + S + 10, 0, -(Bd + S) / 2);
+    box(Bw, H * n, Bd, 0, 0, zLine - Bd / 2);
+    for (let i = 1; i < n; i++) {
+      box(Bw * .5, .18, proj, -Bw * .15, i * H, zLine + proj / 2);
+      const rail = box(Bw * .5, 1.0, .04, -Bw * .15, i * H + .18, zLine + proj - .02, { mat: MAT.glass, soft: true, shadow: false });
+    }
+    line([[-Bw / 2 - 3, .02, zPlot], [Bw / 2 + 3, .02, zPlot]], MAT.plot, true);
+    line([[-Bw / 2 - 3, .02, zLine], [Bw / 2 + 3, .02, zLine]], MAT.bline, true);
+    label('גבול מגרש', [Bw / 2 + 2.2, .05, zPlot + .4], 'desc');
+    label('קו בניין', [Bw / 2 + 2.2, .05, zLine + .4], 'limit');
+    dim([Bw / 2 + 1, 0, zLine], [Bw / 2 + 1, 0, zPlot], [1.2, 0, 0], null, 'מרווח ' + S.toFixed(2) + ' מ׳');
+    const lim = P('balcony_ratio_max') * S <= P('balcony_abs_max') ? 'balcony_ratio_max' : 'balcony_abs_max';
+    dim([-Bw * .4, H * (n - 1), zLine], [-Bw * .4, H * (n - 1), zLine + proj], [-0.6, .6, 0], lim,
+      '≤ ' + proj.toFixed(2) + ' מ׳ (' + (lim === 'balcony_ratio_max' ? fmt('balcony_ratio_max') + ' מהמרווח' : 'לכל היותר') + ')');
+    person(Bw * .3, zLine + 1.2);
+    return [Bw + 6, H * n + 1, Bd + S + 4];
+  },
+  stairs: function () {
+    const R = P('riser_max'), T = P('tread_min'), n = Math.min(FIX.flightSteps, P('steps_per_flight_max')), w = 1.2;
+    const L = n * T, Ht = n * R;
+    ground(L + 6, w + 6, L / 2, 0);
+    for (let i = 0; i < n; i++) box(T, R * (i + 1), w, i * T + T / 2, 0, 0);
+    box(2.0, Ht, w, L + 1.0, 0, 0);                           // משטח עליון
+    const hr = P('headroom_min'), ceilY = Ht + hr;   // תקרה אופקית: הגובה הפנוי הקטן ביותר הוא מעל המדרגה העליונה
+    box(L + 2, .2, w + .4, L / 2 + .5, ceilY, 0, { mat: MAT.massSoft, soft: true, shadow: false });
+    // קו אפי המדרגות
+    line([[0, R, -w / 2 - .02], [L - T, Ht, -w / 2 - .02]], MAT.dim);
+    dim([T, R, w / 2], [T, 2 * R, w / 2], [0, 0, .55], 'riser_max');
+    dim([T, 2 * R, w / 2], [2 * T, 2 * R, w / 2], [0, .45, .55], 'tread_min');
+    dim([L - T, Ht, -w / 2], [L - T, Ht + hr, -w / 2], [0, 0, -.6], 'headroom_min');
+    label(n + ' מדרגות במהלך, ' + opSign('steps_per_flight_max') + ' ' + fmt('steps_per_flight_max'), [L / 2, Ht + R + .5, w / 2 + .9], 'limit', 'steps_per_flight_max');
+    person(L + .6, .2);
+    return [L + 4, ceilY + Ht, w + 3];
+  },
+  railing: function () {
+    const h = P('railing_height_min'), Wd = 4, D = 2.4, drop = 3.0;
+    ground(Wd + 6, D + 8, 0, 1);
+    box(Wd, .25, D, 0, drop - .25, 0);
+    box(.4, drop - .25, .4, -Wd / 2 + .3, 0, -D / 2 + .3);
+    box(.4, drop - .25, .4, Wd / 2 - .3, 0, -D / 2 + .3);
+    box(Wd, h, .05, 0, drop, D / 2 - .025, { mat: MAT.glass, soft: true, shadow: false });
+    box(Wd, .05, .08, 0, drop + h - .05, D / 2 - .04, { mat: MAT.accent });
+    person(.4, -.2).position.y = drop;
+    dim([Wd / 2, drop, D / 2], [Wd / 2, drop + h, D / 2], [.6, 0, 0], 'railing_height_min');
+    dim([Wd / 2, 0, D / 2], [Wd / 2, drop, D / 2], [.6, 0, .6], null, 'הפרש מפלסים ' + drop.toFixed(2) + ' מ׳');
+    return [Wd + 3, drop + 2, D + 4];
+  },
+  door: function () {
+    const dw = P('door_width_min'), dh = P('door_height_min'), Hw = 2.7, Ww = 4, t = .2;
+    ground(Ww + 5, 6, 0, 0);
+    box((Ww - dw) / 2, Hw, t, -(Ww + dw) / 4, 0, 0);
+    box((Ww - dw) / 2, Hw, t, (Ww + dw) / 4, 0, 0);
+    box(dw, Hw - dh, t, 0, dh, 0);
+    const leaf = box(.05, dh - .02, dw - .04, 0, 0, 0, { mat: MAT.accent, shadow: true });
+    leaf.position.set(-dw / 2 + .03, 0, t / 2 + (dw - .04) / 2);
+    dim([-dw / 2, 0, t / 2], [dw / 2, 0, t / 2], [0, 0, 1.4], 'door_width_min');
+    dim([dw / 2, 0, t / 2], [dw / 2, dh, t / 2], [.7, 0, 0], 'door_height_min');
+    person(1.3, 1.2);
+    return [Ww + 2, Hw + .5, 4];
+  },
+  walking: function () {
+    const n = FIX.apts, aw = FIX.aptW, ad = FIX.aptDepth, cw = FIX.corridorW, sw = FIX.stairW;
+    const len = n * aw, H = 2.9;
+    ground(len + sw + 6, 2 * ad + cw + 6, (len + sw) / 2 - sw / 2, 0);
+    for (let i = 0; i < n; i++) {
+      const x = sw + i * aw + aw / 2;
+      box(aw - .2, H, ad, x, 0, -(cw / 2 + ad / 2), { mat: MAT.massSoft, soft: true, shadow: false });
+      if (i < n - 1) box(aw - .2, H, ad, x, 0, cw / 2 + ad / 2, { mat: MAT.massSoft, soft: true, shadow: false });
+    }
+    box(sw - .2, H + .4, cw + 2 * ad * .6, sw / 2, 0, 0);       // חדר מדרגות מוגן
+    label('חדר מדרגות מוגן', [sw / 2, H + 1.1, 0], 'desc');
+    // מסלול: מדלת הדירה הרחוקה, לאורך הפרוזדור, עד דלת חדר המדרגות
+    const far = sw + (n - 1) * aw + aw / 2;
+    const pts = [[far, .05, -cw / 2], [far, .05, 0], [sw, .05, 0]];
+    const pl = line(pts, MAT.path);
+    let L = 0; for (let i = 1; i < pts.length; i++) L += new THREE.Vector3().fromArray(pts[i]).distanceTo(new THREE.Vector3().fromArray(pts[i - 1]));
+    const ok = L <= P('walk_max');
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(.18, 16, 12), new THREE.MeshStandardMaterial({ color: col('--ink') }));
+    dot.position.set(far, .2, -cw / 2); scene3.add(dot); dot.userData.path = pts; dot.userData.len = L;
+    walker = dot;
+    const d = label('מסלול במודל ' + L.toFixed(1) + ' מ׳, מותר ' + opSign('walk_max') + ' ' + fmt('walk_max') + (ok ? '' : ', חריגה'), [(far + sw) / 2, .3, .7], 'limit', 'walk_max');
+    d.lines = [pl]; d.baseMat = MAT.path;
+    label('דלת הדירה הרחוקה', [far, .3, -cw / 2 - .8], 'desc');
+    person(far - 1.2, .3);
+    return [len + sw + 2, H + 2, 2 * ad + cw + 2];
+  }
+};
+let walker = null;
+
+function loadScene(id, force) {
+  const sheetTitle = document.getElementById('sceneTitle');
+  if (!id) {
+    currentScene = null; clearScene(); scene3 = null;
+    if (renderer) renderer.clear();
+    sheetTitle.textContent = 'אין המחשה לסעיף זה';
+    emptyEl.hidden = false;
+    const near = Object.keys(SCENES).map(function (k) { return '<button class="btn" type="button" data-ref="' + SCENES[k].rules[0] + '">' + esc(SCENES[k].title) + '</button>'; }).join('');
+    emptyEl.innerHTML = '<strong>הסעיף עדיין לא מומחש.</strong><span>ההמחשות הקיימות בגרסה זו:</span><div class="links">' + near + '</div>';
+    buildDimTable();
+    return;
+  }
+  emptyEl.hidden = true;
+  if (id === currentScene && !force) { setActiveKey(null); return; }
+  currentScene = id;
+  sheetTitle.textContent = SCENES[id].title;
+  if (!has3D) {
+    emptyEl.hidden = false;
+    emptyEl.innerHTML = '<strong>המודל לא נטען.</strong><span>רעננו את הדף. הנוסח והערכים זמינים בעמודה הסמוכה.</span>';
+    buildDimTable(); return;
+  }
+  clearScene();
+  scene3 = new THREE.Scene();
+  makeMats(); lights(); walker = null;
+  const ext = BUILD[id]();
+  bounds = new THREE.Box3();
+  scene3.traverse(function (o) { if (o.isMesh && o.geometry.type !== 'PlaneGeometry') bounds.expandByObject(o); });
+  dims.forEach(function (d) { bounds.expandByPoint(d.pos); });
+  frame = 0;
+  growers.forEach(function (g) { g.userData.sy = g.scale.y; g.scale.y = reduce ? g.userData.sy : .001; });
+  dims.forEach(function (d) { if (!reduce) d.el.classList.add('hidden'); });
+  fitCamera(true);
+  buildDimTable();
+}
+emptyEl.addEventListener('click', function (e) { const b = e.target.closest('[data-ref]'); if (b) go(b.dataset.ref); });
+
+function setActiveKey(k, scrollToText) {
+  activeKey = k;
+  dims.forEach(function (d) {
+    const on = !!k && d.key === k;
+    d.el.classList.toggle('on', on);
+    (d.lines || []).forEach(function (l) { l.material = on ? MAT.on : l.userData.base; });
+  });
+  textEl.querySelectorAll('.val').forEach(function (v) { v.classList.toggle('on', !!k && v.dataset.key === k); });
+  if (k && scrollToText) {
+    const v = textEl.querySelector('.val[data-key="' + k + '"]');
+    if (v) { const sec = v.closest('.rule'); v.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); if (sec) { sec.classList.remove('flash'); void sec.offsetWidth; sec.classList.add('flash'); } }
+  }
+}
+labelsEl.addEventListener('mouseover', function (e) { const l = e.target.closest('.dim-label[data-key]'); if (l) setActiveKey(l.dataset.key); });
+labelsEl.addEventListener('mouseout', function (e) { const l = e.target.closest('.dim-label[data-key]'); if (l) setActiveKey(null); });
+labelsEl.addEventListener('click', function (e) {
+  const l = e.target.closest('.dim-label[data-key]'); if (!l) return;
+  const ref = PARAMS[l.dataset.key].rule;
+  if (ref !== current) { current = ref; renderText(); markIndex(); updateTitleBlock(); }
+  setActiveKey(l.dataset.key, true);
+});
+
+function tick() {
+  requestAnimationFrame(tick);
+  if (!renderer || !scene3 || !camera) return;
+  frame++;
+  if (!reduce && frame <= 40) {
+    const t = frame / 40, e = 1 - Math.pow(1 - t, 3);
+    growers.forEach(function (g) { g.scale.y = Math.max(.001, e * g.userData.sy); });
+    if (frame === 40) dims.forEach(function (d) { d.el.classList.remove('hidden'); });
+  }
+  if (walker && !reduce) {
+    const pts = walker.userData.path, L = walker.userData.len, s = ((performance.now() / 1000) * 2.2) % (L + 3);
+    let rem = Math.min(s, L), i = 1;
+    for (; i < pts.length; i++) {
+      const a = new THREE.Vector3().fromArray(pts[i - 1]), b = new THREE.Vector3().fromArray(pts[i]), seg = a.distanceTo(b);
+      if (rem <= seg) { walker.position.copy(a.lerp(b, rem / seg)); walker.position.y = .2; break; }
+      rem -= seg;
+    }
+  }
+  if (controls) controls.update();
+  renderer.render(scene3, camera);
+  const w = stage.clientWidth, h = stage.clientHeight, v = new THREE.Vector3();
+  dims.forEach(function (d) {
+    v.copy(d.pos).project(camera);
+    d.el.style.transform = 'translate(' + ((v.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v.y) / 2 * h).toFixed(1) + 'px) translate(-50%,-50%)';
+  });
+}
+
+/* ---------- תצוגות ---------- */
+document.querySelectorAll('.seg button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    view = b.dataset.view;
+    document.querySelectorAll('.seg button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    fitCamera(true); updateTitleBlock();
+  });
+});
+document.getElementById('resetBtn').addEventListener('click', function () { fitCamera(true); });
+
+/* ---------- טבלת כותרת וטבלה לנגישות ---------- */
+function updateTitleBlock() {
+  const s = SECTIONS[current]; if (!s) return;
+  const r = RULES[current];
+  const keys = r ? Object.keys(PARAMS).filter(function (k) { return SCENES[r.scene].rules.indexOf(PARAMS[k].rule) >= 0; }) : [];
+  const unverified = keys.filter(function (k) { return !PARAMS[k].verified; }).length;
+  const viewName = { plan: 'תכנית', section: 'חתך', axon: 'אקסונומטריה' }[view];
+  document.getElementById('titleblock').innerHTML =
+    '<div><span>תקנה</span><b>' + s.ref + '</b></div>' +
+    '<div><span>נושא</span><b>' + esc(s.title) + '</b></div>' +
+    '<div><span>תצוגה</span><b>' + (r ? viewName : 'אין') + '</b></div>' +
+    '<div><span>מצב הערכים</span><b>' + (r ? (unverified ? unverified + ' לאימות' : 'נבדקו') : 'טרם הוזנו') + '</b></div>';
+}
+function buildDimTable() {
+  const t = document.getElementById('dimTable');
+  const rows = dims.filter(function (d) { return d.key; }).map(function (d) {
+    const p = PARAMS[d.key];
+    return '<tr><td>' + esc(p.label) + '</td><td>' + opSign(d.key) + ' ' + fmt(d.key) + '</td><td>תקנה ' + p.rule + '</td></tr>';
+  }).join('');
+  t.innerHTML = '<caption>מידות בהמחשה</caption><tr><th>פרמטר</th><th>ערך</th><th>סעיף</th></tr>' + rows;
+}
+
+/* ---------- הפעלה ---------- */
+syncThemeBtn();
+buildIndex();
+init3D();
+go(fromHash() || '3.2.2.5');
+window.addEventListener('hashchange', function () { const h = fromHash(); if (h && h !== current) go(h); });
+})();
+</script>
