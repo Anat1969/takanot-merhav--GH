@@ -2,7 +2,9 @@ name: פרסום ל־GitHub Pages
 
 on:
   push:
-    branches: [main]
+    # זמני: סביבת github-pages עדיין מתירה פריסה רק מהענף הזה. להסיר אחרי שמוסיפים את main
+    # ב־Settings > Environments > github-pages > Deployment branches
+    branches: [main, claude/sweet-newton-m7ldpw]
   workflow_dispatch:
 
 permissions:
