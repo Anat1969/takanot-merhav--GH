@@ -19,6 +19,18 @@ describe('סצנות', () => {
     });
   }
 
+  for (const id of Object.keys(DATA.scenes)) {
+    for (const k of paramsOfScene(id)) {
+      it(`${id}: שינוי ${k} משנה את המודל`, () => {
+        const base = JSON.stringify(buildScene(id));
+        // מגבלת מקסימום מוקטנת, מגבלת מינימום מוגדלת: כך המגבלה תמיד נעשית מחמירה וקובעת
+        const p = DATA.params[k];
+        const changed = JSON.stringify(buildScene(id, { [k]: p.value * (p.op === '<=' ? 0.5 : 1.2) }));
+        expect(changed).not.toBe(base);
+      });
+    }
+  }
+
   it('שינוי גובה חדר משנה את הגיאומטריה ואת התווית', () => {
     const a = buildScene('room');
     const b = buildScene('room', { room_height_min: 3.1 });

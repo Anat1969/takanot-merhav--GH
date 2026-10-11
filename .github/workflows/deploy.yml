@@ -2,8 +2,7 @@ name: פרסום ל־GitHub Pages
 
 on:
   push:
-    # הענף הזמני נשאר כאן עד שענף ברירת המחדל בריפו יוחלף ל־main (הגנת סביבת Pages מתירה רק אותו)
-    branches: [main, claude/sweet-newton-m7ldpw]
+    branches: [main]
   workflow_dispatch:
 
 permissions:

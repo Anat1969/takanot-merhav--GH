@@ -8,9 +8,9 @@ describe('data/takanot.json', () => {
   it('עובר את הסכמה ואת בדיקות ההצלבה', () => {
     expect(crossCheck(DataSchema.parse(raw))).toEqual([]);
   });
-  it('61 סעיפים בתוכן העניינים, 15 עם תמצית', () => {
+  it('61 סעיפים בתוכן העניינים, 28 עם תמצית', () => {
     expect(Object.keys(SECTIONS).length).toBe(61);
-    expect(Object.keys(DATA.rules).length).toBe(15);
+    expect(Object.keys(DATA.rules).length).toBe(28);
   });
   it('אימות בלי מקור נכשל', () => {
     const d = DataSchema.parse(raw);

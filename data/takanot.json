@@ -180,6 +180,168 @@
       "rule": "3.2.15.2",
       "verified": false,
       "source": null
+    },
+    "mezz_clear_below_min": {
+      "label": "גובה פנוי מתחת ליציע",
+      "op": ">=",
+      "value": 2.2,
+      "unit": "m",
+      "rule": "2.09",
+      "verified": false,
+      "source": null
+    },
+    "mezz_clear_above_min": {
+      "label": "גובה פנוי מעל היציע",
+      "op": ">=",
+      "value": 2.2,
+      "unit": "m",
+      "rule": "2.09",
+      "verified": false,
+      "source": null
+    },
+    "shop_width_min": {
+      "label": "רוחב חנות",
+      "op": ">=",
+      "value": 3.0,
+      "unit": "m",
+      "rule": "2.06",
+      "verified": false,
+      "source": null
+    },
+    "shop_height_max": {
+      "label": "גובה חנות באזור מגורים",
+      "op": "<=",
+      "value": 4.5,
+      "unit": "m",
+      "rule": "2.07",
+      "verified": false,
+      "source": null
+    },
+    "inner_court_width_min": {
+      "label": "רוחב חצר פנימית",
+      "op": ">=",
+      "value": 3.0,
+      "unit": "m",
+      "rule": "2.24",
+      "verified": false,
+      "source": null
+    },
+    "street_projection_clearance_min": {
+      "label": "גובה פנוי מתחת לבליטה",
+      "op": ">=",
+      "value": 3.5,
+      "unit": "m",
+      "rule": "4.05",
+      "verified": false,
+      "source": null
+    },
+    "street_projection_depth_max": {
+      "label": "בליטה מעבר לקו המגרש",
+      "op": "<=",
+      "value": 1.0,
+      "unit": "m",
+      "rule": "4.05",
+      "verified": false,
+      "source": null
+    },
+    "canopy_clearance_min": {
+      "label": "גובה פנוי מתחת לגגון",
+      "op": ">=",
+      "value": 2.5,
+      "unit": "m",
+      "rule": "4.08",
+      "verified": false,
+      "source": null
+    },
+    "canopy_depth_max": {
+      "label": "בליטת גגון",
+      "op": "<=",
+      "value": 2.0,
+      "unit": "m",
+      "rule": "4.08",
+      "verified": false,
+      "source": null
+    },
+    "setback_structure_height_max": {
+      "label": "גובה מבנה במרווח",
+      "op": "<=",
+      "value": 2.2,
+      "unit": "m",
+      "rule": "4.09",
+      "verified": false,
+      "source": null
+    },
+    "common_path_max": {
+      "label": "אורך מהלך משותף",
+      "op": "<=",
+      "value": 15,
+      "unit": "m",
+      "rule": "3.2.15.3",
+      "verified": false,
+      "source": null
+    },
+    "parking_width_min": {
+      "label": "רוחב מקום חניה נגיש",
+      "op": ">=",
+      "value": 3.5,
+      "unit": "m",
+      "rule": "8.110",
+      "verified": false,
+      "source": null
+    },
+    "parking_length_min": {
+      "label": "אורך מקום חניה נגיש",
+      "op": ">=",
+      "value": 5.0,
+      "unit": "m",
+      "rule": "8.110",
+      "verified": false,
+      "source": null
+    },
+    "toilet_turning_min": {
+      "label": "קוטר סיבוב בתא שירותים",
+      "op": ">=",
+      "value": 1.5,
+      "unit": "m",
+      "rule": "8.140",
+      "verified": false,
+      "source": null
+    },
+    "lift_cab_width_min": {
+      "label": "רוחב תא מעלית",
+      "op": ">=",
+      "value": 1.1,
+      "unit": "m",
+      "rule": "8.120",
+      "verified": false,
+      "source": null
+    },
+    "lift_cab_depth_min": {
+      "label": "עומק תא מעלית",
+      "op": ">=",
+      "value": 1.4,
+      "unit": "m",
+      "rule": "8.120",
+      "verified": false,
+      "source": null
+    },
+    "route_width_min": {
+      "label": "רוחב דרך נגישה",
+      "op": ">=",
+      "value": 1.3,
+      "unit": "m",
+      "rule": "8.50",
+      "verified": false,
+      "source": null
+    },
+    "route_slope_max": {
+      "label": "שיפוע דרך נגישה",
+      "op": "<=",
+      "value": 0.05,
+      "unit": "slope",
+      "rule": "8.50",
+      "verified": false,
+      "source": null
     }
   },
   "rules": {
@@ -422,6 +584,208 @@
         "קצה סגור",
         "מילוט"
       ]
+    },
+    "2.09": {
+      "title": "יציע בדירה",
+      "kind": "דרישה מדידה",
+      "scene": "mezzanine",
+      "body": [
+        "הגובה הפנוי מתחת ליציע לא יפחת מ־{mezz_clear_below_min}, והגובה הפנוי מעליו לא יפחת מ־{mezz_clear_above_min}.",
+        "הסעיף מגביל גם את שטח היציע ביחס לשטח החדר. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "יציע",
+        "גלריה",
+        "מזנין",
+        "גובה כפול",
+        "חלל כפול"
+      ]
+    },
+    "2.06": {
+      "title": "רוחב מינימלי של חנות",
+      "kind": "דרישה מדידה",
+      "scene": "shop",
+      "body": [
+        "רוחב החנות, בין קירותיה, לא יפחת מ־{shop_width_min}."
+      ],
+      "keywords": [
+        "חנות",
+        "מסחר",
+        "חזית מסחרית",
+        "רוחב חנות"
+      ]
+    },
+    "2.07": {
+      "title": "גובה מקסימלי של חנות באזור מגורים",
+      "kind": "מגבלה מדידה",
+      "scene": "shop",
+      "body": [
+        "באזור מגורים, גובה החנות לא יעלה על {shop_height_max}.",
+        "המודל מציג חנות בקומת קרקע מתחת לקומות מגורים."
+      ],
+      "keywords": [
+        "חנות",
+        "גובה חנות",
+        "קומת קרקע",
+        "אזור מגורים"
+      ]
+    },
+    "2.24": {
+      "title": "חלון הפונה לחצר פנימית בחדר מגורים",
+      "kind": "דרישה מדידה",
+      "scene": "court",
+      "body": [
+        "חלון של חדר מגורים רשאי לפנות לחצר פנימית רק אם רוחב החצר, מול החלון, אינו פחות מ־{inner_court_width_min}.",
+        "הסעיף קובע גם יחס בין רוחב החצר לגובה הקירות שסביבה. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "חצר פנימית",
+        "פטיו",
+        "חלון",
+        "אוורור",
+        "תאורה טבעית"
+      ]
+    },
+    "4.05": {
+      "title": "בליטות מעבר לקו מגרש",
+      "kind": "מגבלה מדידה",
+      "scene": "street",
+      "body": [
+        "בליטה מעבר לקו המגרש אל המדרכה לא תעלה על {street_projection_depth_max}, והגובה הפנוי מתחתיה לא יפחת מ־{street_projection_clearance_min}."
+      ],
+      "keywords": [
+        "בליטה",
+        "מדרכה",
+        "קו מגרש",
+        "מרפסת",
+        "חזית לרחוב"
+      ]
+    },
+    "4.08": {
+      "title": "תנאים נוספים להבלטת גגון או סוכך",
+      "kind": "מגבלה מדידה",
+      "scene": "street",
+      "body": [
+        "גגון או סוכך מעל מדרכה לא יבלטו יותר מ־{canopy_depth_max}, והגובה הפנוי מתחתיהם לא יפחת מ־{canopy_clearance_min}."
+      ],
+      "keywords": [
+        "גגון",
+        "סוכך",
+        "מדרכה",
+        "כניסה",
+        "הצללה"
+      ]
+    },
+    "4.09": {
+      "title": "בניה מותרת במרווח",
+      "kind": "מגבלה מדידה",
+      "scene": "setbackShed",
+      "body": [
+        "מבנה עזר שמותר להקים במרווח לא יעלה בגובהו על {setback_structure_height_max}.",
+        "הסעיף מפרט אילו מבנים מותרים במרווח ובאילו תנאים. המודל מציג מחסן במרווח צדדי."
+      ],
+      "keywords": [
+        "מרווח",
+        "מחסן",
+        "מבנה עזר",
+        "גדר",
+        "קו בניין"
+      ]
+    },
+    "3.2.1.6": {
+      "title": "כיוון ואופן פתיחה של דלת",
+      "kind": "דרישה איכותית",
+      "scene": "doorSwing",
+      "body": [
+        "דלת בדרך מוצא נפתחת בכיוון המילוט, כלומר החוצה מהחדר אל עבר היציאה.",
+        "הסעיף קובע גם מתי מותרת פתיחה בכיוון ההפוך ואילו סוגי דלתות אינם מותרים. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "כיוון פתיחה",
+        "דלת",
+        "מילוט",
+        "יציאה",
+        "ציר"
+      ]
+    },
+    "3.2.15.3": {
+      "title": "מהלך משותף",
+      "kind": "מגבלה מדידה",
+      "scene": "commonPath",
+      "body": [
+        "המהלך המשותף, מהנקודה הרחוקה בחלל ועד הנקודה שבה אפשר לבחור בין שתי דרכי מוצא נפרדות, לא יעלה על {common_path_max}.",
+        "אחרי נקודת ההתפצלות כל דרך מובילה ליציאה אחרת. אופן המדידה בסעיף 3.2.15.5."
+      ],
+      "keywords": [
+        "מהלך משותף",
+        "מילוט",
+        "יציאות",
+        "התפצלות",
+        "מרחק הליכה"
+      ]
+    },
+    "8.110": {
+      "title": "הקצאת מקומות חניה נגישים",
+      "kind": "דרישה מדידה",
+      "scene": "parking",
+      "body": [
+        "מקום חניה נגיש יהיה ברוחב של {parking_width_min} לפחות ובאורך של {parking_length_min} לפחות.",
+        "הסעיף קובע גם את מספר המקומות הנגישים ביחס לסך מקומות החניה. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "חניה",
+        "חניה נגישה",
+        "נכים",
+        "מקום חניה",
+        "נגישות"
+      ]
+    },
+    "8.140": {
+      "title": "בתי שימוש נגישים",
+      "kind": "דרישה מדידה",
+      "scene": "toilet",
+      "body": [
+        "בתא שירותים נגיש יהיה שטח פנוי שאפשר לסובב בו כיסא גלגלים, בקוטר של {toilet_turning_min} לפחות.",
+        "הסעיף קובע גם מאחזים, גובה אסלה ומיקום כיור. המודל מציג את שטח הסיבוב בלבד."
+      ],
+      "keywords": [
+        "שירותים",
+        "בית שימוש",
+        "נגיש",
+        "כיסא גלגלים",
+        "קוטר סיבוב"
+      ]
+    },
+    "8.120": {
+      "title": "מעלית לשימוש הציבור",
+      "kind": "דרישה מדידה",
+      "scene": "lift",
+      "body": [
+        "תא מעלית לשימוש הציבור יהיה ברוחב פנימי של {lift_cab_width_min} לפחות ובעומק של {lift_cab_depth_min} לפחות.",
+        "הסעיף קובע גם את רוחב הדלת ואת מיקום לוח הפיקוד. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "מעלית",
+        "תא מעלית",
+        "נגישות",
+        "כיסא גלגלים"
+      ]
+    },
+    "8.50": {
+      "title": "דרך נגישה לבניין ציבורי",
+      "kind": "דרישה מדידה",
+      "scene": "route",
+      "body": [
+        "דרך נגישה מהרחוב אל הכניסה תהיה ברוחב של {route_width_min} לפחות, ושיפועה לא יעלה על {route_slope_max}.",
+        "שיפוע תלול יותר נחשב כבש, וחלות עליו דרישות סעיף 3.2.10.2."
+      ],
+      "keywords": [
+        "דרך נגישה",
+        "נגישות",
+        "שביל",
+        "שיפוע",
+        "כניסה"
+      ]
     }
   },
   "scenes": {
@@ -488,6 +852,74 @@
       "title": "פרוזדור ללא מוצא",
       "rules": [
         "3.2.15.2"
+      ]
+    },
+    "mezzanine": {
+      "title": "יציע בחלל כפול",
+      "rules": [
+        "2.09"
+      ]
+    },
+    "shop": {
+      "title": "חנות בקומת קרקע",
+      "rules": [
+        "2.06",
+        "2.07"
+      ]
+    },
+    "court": {
+      "title": "חצר פנימית מול חלון",
+      "rules": [
+        "2.24"
+      ]
+    },
+    "street": {
+      "title": "חזית לרחוב: בליטה וגגון",
+      "rules": [
+        "4.05",
+        "4.08"
+      ]
+    },
+    "setbackShed": {
+      "title": "מבנה עזר במרווח",
+      "rules": [
+        "4.09"
+      ]
+    },
+    "doorSwing": {
+      "title": "כיוון פתיחת דלת במילוט",
+      "rules": [
+        "3.2.1.6"
+      ]
+    },
+    "commonPath": {
+      "title": "מהלך משותף עד התפצלות",
+      "rules": [
+        "3.2.15.3"
+      ]
+    },
+    "parking": {
+      "title": "מקום חניה נגיש",
+      "rules": [
+        "8.110"
+      ]
+    },
+    "toilet": {
+      "title": "תא שירותים נגיש",
+      "rules": [
+        "8.140"
+      ]
+    },
+    "lift": {
+      "title": "תא מעלית נגיש",
+      "rules": [
+        "8.120"
+      ]
+    },
+    "route": {
+      "title": "דרך נגישה אל הכניסה",
+      "rules": [
+        "8.50"
       ]
     }
   },
@@ -977,6 +1409,168 @@
       "personX": 2,
       "personZ": 0.3,
       "groundMargin": 5
+    },
+    "mezzanine": {
+      "roomLength": 6,
+      "roomWidth": 4,
+      "slabThickness": 0.25,
+      "wallThickness": 0.2,
+      "mezzDepth": 2.4,
+      "railHeight": 1.05,
+      "glassThickness": 0.04,
+      "dimSide": 0.6,
+      "personBelowX": 0.8,
+      "personZ": 0.4,
+      "groundMargin": 5
+    },
+    "shop": {
+      "depth": 8,
+      "pier": 0.4,
+      "neighborWidth": 4,
+      "floorsAbove": 3,
+      "glassThickness": 0.06,
+      "dimSide": 0.7,
+      "personZ": 1.6,
+      "groundMargin": 6
+    },
+    "court": {
+      "wingLength": 14,
+      "wingDepth": 7,
+      "height": 12,
+      "windowWidth": 1.6,
+      "windowHeight": 1.4,
+      "windowSill": 3.9,
+      "glassThickness": 0.06,
+      "dimLift": 0.3,
+      "labelLift": 0.6,
+      "personZ": 0,
+      "groundMargin": 6
+    },
+    "street": {
+      "buildingWidth": 12,
+      "buildingDepth": 10,
+      "height": 12,
+      "sidewalkWidth": 3.5,
+      "roadWidth": 7,
+      "patchHeight": 0.01,
+      "balconyWidthShare": 0.4,
+      "balconyShift": 0.25,
+      "slabThickness": 0.18,
+      "canopyWidth": 3,
+      "canopyShift": 0.25,
+      "canopyThickness": 0.12,
+      "dimSide": 0.5,
+      "lineLift": 0.02,
+      "labelX": 1.5,
+      "personX": -1,
+      "groundMargin": 4
+    },
+    "setbackShed": {
+      "plotWidth": 20,
+      "plotDepth": 24,
+      "sideSetback": 3,
+      "buildingHeight": 7,
+      "shedWidth": 2,
+      "shedDepth": 3,
+      "shedShiftShare": 0.5,
+      "lineLift": 0.02,
+      "dimSide": 0.6,
+      "labelLift": 0.4,
+      "personZ": 2,
+      "groundMargin": 6
+    },
+    "doorSwing": {
+      "wallWidth": 5,
+      "wallHeight": 2.7,
+      "wallThickness": 0.2,
+      "leafThickness": 0.05,
+      "arcSegments": 24,
+      "arcLift": 0.02,
+      "arrowLength": 2.6,
+      "arrowHead": 0.35,
+      "arrowStart": -1.6,
+      "arrowLift": 0.05,
+      "labelLift": 0.4,
+      "dimSide": 0.6,
+      "personX": 1.4,
+      "personZ": -1.4,
+      "groundDepth": 7,
+      "groundMargin": 4
+    },
+    "commonPath": {
+      "roomLength": 24,
+      "roomWidth": 14,
+      "wallHeight": 1.2,
+      "wallThickness": 0.2,
+      "exitWidth": 1.6,
+      "startX": 1.5,
+      "lift": 0.05,
+      "walkerRadius": 0.2,
+      "walkerSpeed": 2.4,
+      "walkerPause": 2,
+      "dimLift": 0.9,
+      "labelLift": 0.4,
+      "personX": 1,
+      "personZ": 1.5,
+      "groundMargin": 4
+    },
+    "parking": {
+      "regularWidth": 2.5,
+      "regularCount": 2,
+      "carWidth": 1.8,
+      "carLength": 4.5,
+      "carHeight": 1.5,
+      "carBack": 0.4,
+      "lineLift": 0.02,
+      "patchHeight": 0.01,
+      "dimSide": 0.6,
+      "labelLift": 0.3,
+      "personZ": 0.9,
+      "groundMargin": 5
+    },
+    "toilet": {
+      "wallHeight": 2.4,
+      "wallThickness": 0.15,
+      "clearance": 0.1,
+      "wcWidth": 0.4,
+      "wcDepth": 0.7,
+      "wcHeight": 0.46,
+      "sinkWidth": 0.6,
+      "sinkDepth": 0.45,
+      "sinkHeight": 0.85,
+      "sinkThickness": 0.15,
+      "fixtureDepth": 0.75,
+      "circleSegments": 48,
+      "circleLift": 0.02,
+      "patchHeight": 0.01,
+      "dimLift": 0.05,
+      "groundMargin": 3
+    },
+    "lift": {
+      "cabHeight": 2.3,
+      "wallThickness": 0.08,
+      "doorShare": 0.75,
+      "shaftGap": 0.25,
+      "shaftHeight": 3.2,
+      "dimSide": 0.5,
+      "lobbyDepth": 2,
+      "patchHeight": 0.01,
+      "groundMargin": 4
+    },
+    "route": {
+      "rise": 0.3,
+      "plazaLength": 3,
+      "buildingWidth": 10,
+      "buildingDepth": 8,
+      "buildingHeight": 7,
+      "doorWidth": 1.6,
+      "doorHeight": 2.4,
+      "dimSide": 0.6,
+      "labelLift": 0.4,
+      "personX": 1,
+      "personZ": 0.3,
+      "groundMargin": 5,
+      "patchHeight": 0.01
     }
   },
   "synonyms": [

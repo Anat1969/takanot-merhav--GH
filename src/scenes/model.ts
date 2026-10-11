@@ -41,9 +41,19 @@ export function inputFor(sceneId: string, data: Data = DATA, override: Record<st
       if (!p) throw new Error(`פרמטר חסר: ${key}`);
       return p.value;
     },
-    fx: data.fixtures,
-    sf: data.sceneFixtures[sceneId] ?? {},
+    fx: strict(data.fixtures, 'fixtures'),
+    sf: strict(data.sceneFixtures[sceneId] ?? {}, 'sceneFixtures.' + sceneId),
   };
+}
+
+/** מידת רקע שחסרה בקובץ הנתונים היא שגיאה, לא undefined שקט */
+function strict(obj: Record<string, number>, where: string): Record<string, number> {
+  return new Proxy(obj, {
+    get(target, key) {
+      if (typeof key === 'string' && !(key in target)) throw new Error(`מידת רקע חסרה: ${where}.${key}`);
+      return Reflect.get(target, key);
+    },
+  });
 }
 
 /** בונה מצטבר, כדי שקוד הסצנות יהיה קצר וקריא */
