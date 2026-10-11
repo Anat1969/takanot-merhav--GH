@@ -49,4 +49,25 @@ describe('סצנות', () => {
     const r = m.dims.find((d) => d.paramKey === 'riser_max')!;
     expect(r.to[1] - r.from[1]).toBeCloseTo(0.16);
   });
+
+  it('כבש: שיפוע מתון יותר מאריך את הכבש', () => {
+    const a = buildScene('ramp').ramps[0];
+    const b = buildScene('ramp', { ramp_slope_max: 1 / 20 }).ramps[0];
+    expect(b.length).toBeGreaterThan(a.length);
+    expect(a.rise / a.length).toBeCloseTo(DATA.params.ramp_slope_max.value);
+  });
+
+  it('חדר מדרגות: רוחב המהלך ועומק המשטח לפי הנתונים', () => {
+    const m = buildScene('stairwell', { stair_width_min: 1.4, landing_depth_min: 1.6 });
+    const w = m.dims.find((d) => d.paramKey === 'stair_width_min')!;
+    const l = m.dims.find((d) => d.paramKey === 'landing_depth_min')!;
+    expect(w.to[2] - w.from[2]).toBeCloseTo(1.4);
+    expect(l.to[0] - l.from[0]).toBeCloseTo(1.6);
+  });
+
+  it('פרוזדור ללא מוצא: אורך הקטע לפי המגבלה', () => {
+    const m = buildScene('deadend', { deadend_max: 9 });
+    const d = m.dims.find((x) => x.paramKey === 'deadend_max')!;
+    expect(d.to[0] - d.from[0]).toBeCloseTo(9);
+  });
 });

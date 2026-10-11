@@ -135,6 +135,51 @@
       "rule": "3.2.15.9",
       "verified": false,
       "source": null
+    },
+    "ramp_slope_max": {
+      "label": "שיפוע כבש",
+      "op": "<=",
+      "value": 0.083333,
+      "unit": "slope",
+      "rule": "3.2.10.2",
+      "verified": false,
+      "source": null
+    },
+    "ramp_width_min": {
+      "label": "רוחב כבש",
+      "op": ">=",
+      "value": 1.1,
+      "unit": "m",
+      "rule": "3.2.10.2",
+      "verified": false,
+      "source": null
+    },
+    "stair_width_min": {
+      "label": "רוחב מהלך מדרגות",
+      "op": ">=",
+      "value": 1.1,
+      "unit": "m",
+      "rule": "3.2.2.2",
+      "verified": false,
+      "source": null
+    },
+    "landing_depth_min": {
+      "label": "עומק משטח ביניים",
+      "op": ">=",
+      "value": 1.1,
+      "unit": "m",
+      "rule": "3.2.2.10",
+      "verified": false,
+      "source": null
+    },
+    "deadend_max": {
+      "label": "אורך פרוזדור ללא מוצא",
+      "op": "<=",
+      "value": 6,
+      "unit": "m",
+      "rule": "3.2.15.2",
+      "verified": false,
+      "source": null
     }
   },
   "rules": {
@@ -313,6 +358,70 @@
         "פרוזדור",
         "בטיחות אש"
       ]
+    },
+    "3.2.10.2": {
+      "title": "מידות כבש",
+      "kind": "דרישה מדידה",
+      "scene": "ramp",
+      "body": [
+        "שיפוע הכבש לא יעלה על {ramp_slope_max}, ורוחבו הפנוי לא יפחת מ־{ramp_width_min}.",
+        "הסעיף קובע גם משטחי מנוחה לאורך הכבש ובקצותיו. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "כבש",
+        "רמפה",
+        "שיפוע",
+        "נגישות",
+        "כיסא גלגלים",
+        "רוחב כבש"
+      ]
+    },
+    "3.2.2.2": {
+      "title": "רוחב של מדרגות",
+      "kind": "דרישה מדידה",
+      "scene": "stairwell",
+      "body": [
+        "הרוחב הפנוי של מהלך מדרגות בדרך מוצא לא יפחת מ־{stair_width_min}.",
+        "הרוחב הנדרש תלוי גם בתפוסה (סימן י״ב). המודל מציג את הרוחב המינימלי בלבד."
+      ],
+      "keywords": [
+        "רוחב מדרגות",
+        "מהלך",
+        "חדר מדרגות",
+        "מדרגות",
+        "מוצא"
+      ]
+    },
+    "3.2.2.10": {
+      "title": "משטח אופקי בחדר מדרגות",
+      "kind": "דרישה מדידה",
+      "scene": "stairwell",
+      "body": [
+        "עומק המשטח האופקי בין שני מהלכים לא יפחת מ־{landing_depth_min}.",
+        "העומק נקשר בדרך כלל לרוחב המהלך. יש לבדוק בנוסח."
+      ],
+      "keywords": [
+        "משטח ביניים",
+        "פודסט",
+        "משטח אופקי",
+        "חדר מדרגות"
+      ]
+    },
+    "3.2.15.2": {
+      "title": "פרוזדור ללא מוצא",
+      "kind": "מגבלה מדידה",
+      "scene": "deadend",
+      "body": [
+        "אורך פרוזדור ללא מוצא, שממנו יש כיוון מילוט אחד בלבד, לא יעלה על {deadend_max}.",
+        "המודל מציג קומה עם שני חדרי מדרגות וקצה פרוזדור סגור. הקטע המסומן הוא החלק שממנו אפשר לברוח רק לכיוון אחד."
+      ],
+      "keywords": [
+        "פרוזדור",
+        "מבוי סתום",
+        "ללא מוצא",
+        "קצה סגור",
+        "מילוט"
+      ]
     }
   },
   "scenes": {
@@ -360,6 +469,25 @@
       "title": "מרחק הליכה בקומת מגורים",
       "rules": [
         "3.2.15.9"
+      ]
+    },
+    "ramp": {
+      "title": "כבש: שיפוע ורוחב",
+      "rules": [
+        "3.2.10.2"
+      ]
+    },
+    "stairwell": {
+      "title": "חדר מדרגות: רוחב מהלך ומשטח ביניים",
+      "rules": [
+        "3.2.2.2",
+        "3.2.2.10"
+      ]
+    },
+    "deadend": {
+      "title": "פרוזדור ללא מוצא",
+      "rules": [
+        "3.2.15.2"
       ]
     }
   },
@@ -819,6 +947,36 @@
       "personBack": 1.2,
       "personZ": 0.3,
       "groundMargin": 6
+    },
+    "ramp": {
+      "rise": 0.6,
+      "platformLength": 1.6,
+      "handrailHeight": 0.9,
+      "dimSide": 0.6,
+      "labelLift": 0.45,
+      "personX": 0.6,
+      "personZ": 0,
+      "groundMargin": 5
+    },
+    "stairwell": {
+      "stepsPerFlight": 8,
+      "gap": 0.2,
+      "dimSide": 0.6,
+      "personZ": 0,
+      "wallThickness": 0.2,
+      "groundMargin": 5
+    },
+    "deadend": {
+      "storeyHeight": 2.9,
+      "mainLength": 12,
+      "wallThickness": 0.2,
+      "patchHeight": 0.01,
+      "dimLift": 1.4,
+      "labelLift": 0.3,
+      "stairLabelLift": 0.8,
+      "personX": 2,
+      "personZ": 0.3,
+      "groundMargin": 5
     }
   },
   "synonyms": [

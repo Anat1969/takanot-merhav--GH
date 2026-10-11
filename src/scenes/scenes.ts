@@ -138,7 +138,54 @@ const walking: Build = (b, { value, fx, sf }, data) => {
   b.person(far - sf.personBack, sf.personZ);
 };
 
-const BUILDERS: Record<string, Build> = { room, window: windowScene, balcony, stairs, railing, door, walking };
+const ramp: Build = (b, { value, sf }) => {
+  const slope = value('ramp_slope_max'), w = value('ramp_width_min'), rise = sf.rise, run = rise / slope, pl = sf.platformLength;
+  b.ground(run + pl + sf.groundMargin, w + sf.groundMargin, (run + pl) / 2, 0);
+  b.ramp([0, 0, 0], run, rise, w);
+  b.box(pl, rise, w, run + pl / 2, 0, 0);
+  const hr = sf.handrailHeight;
+  for (const z of [-w / 2, w / 2]) b.line([[0, hr, z], [run, rise + hr, z], [run + pl, rise + hr, z]], 'dim');
+  b.dim([0, 0, -w / 2], [0, 0, w / 2], [-sf.dimSide, 0, 0], 'ramp_width_min');
+  b.measure([0, 0, w / 2], [run, 0, w / 2], [0, 0, sf.dimSide], 'אורך ' + meters(run));
+  b.measure([run + pl, 0, w / 2], [run + pl, rise, w / 2], [sf.dimSide, 0, 0], 'הפרש גובה ' + meters(rise));
+  b.valueTag([run / 2, rise / 2 + sf.labelLift, 0], 'ramp_slope_max', ' שיפוע');
+  b.person(run + sf.personX, sf.personZ, rise);
+};
+
+const stairwell: Build = (b, { value, sf }) => {
+  const W = value('stair_width_min'), D = value('landing_depth_min'), R = value('riser_max'), T = value('tread_min');
+  const n = sf.stepsPerFlight, g = sf.gap, L = n * T, Hl = n * R;
+  const z1 = -(g + W) / 2, z2 = (g + W) / 2;
+  b.ground(L + D + sf.groundMargin, 2 * W + g + sf.groundMargin, (L + D) / 2, 0);
+  for (let i = 0; i < n; i++) b.box(T, R * (i + 1), W, i * T + T / 2, 0, z1);
+  b.box(D, Hl, 2 * W + g, L + D / 2, 0, 0);
+  for (let j = 0; j < n; j++) b.box(T, R * (j + 1), W, L - j * T - T / 2, Hl, z2);
+  b.box(L + D, sf.wallThickness, sf.wallThickness, (L + D) / 2, 0, -W - g / 2 - sf.wallThickness / 2, 'mass', false);
+  b.dim([0, 0, z1 - W / 2], [0, 0, z1 + W / 2], [-sf.dimSide, 0, 0], 'stair_width_min');
+  b.dim([L, Hl, -W - g / 2], [L + D, Hl, -W - g / 2], [0, 0, -sf.dimSide], 'landing_depth_min');
+  b.person(L + D / 2, sf.personZ, Hl);
+};
+
+const deadend: Build = (b, { value, fx, sf }) => {
+  const Lde = value('deadend_max'), sw = fx.stairW, cw = fx.corridorW, aw = fx.aptW, ad = fx.aptDepth, H = sf.storeyHeight;
+  const total = Lde + sw + sf.mainLength + sw;
+  b.ground(total + sf.groundMargin, cw + 2 * ad + sf.groundMargin, total / 2, 0);
+  b.box(sf.wallThickness, H, cw, sf.wallThickness / 2, 0, 0);
+  const zs = -(cw + sw) / 2;
+  b.box(sw, H, sw, Lde + sw / 2, 0, zs);
+  b.box(sw, H, sw, total - sw / 2, 0, zs);
+  b.tag([Lde + sw / 2, H + sf.stairLabelLift, zs], 'חדר מדרגות');
+  b.tag([total - sw / 2, H + sf.stairLabelLift, zs], 'חדר מדרגות');
+  const count = Math.floor(total / aw);
+  for (let i = 0; i < count; i++) b.box(aw - sf.wallThickness, H, ad, i * aw + aw / 2, 0, (cw + ad) / 2, 'soft');
+  b.box(total, sf.patchHeight, cw, total / 2, 0, 0, 'patch', false);
+  b.box(Lde, sf.patchHeight * 2, cw, Lde / 2, 0, 0, 'accent', false);
+  b.dim([0, 0, -cw / 2], [Lde, 0, -cw / 2], [0, sf.dimLift, 0], 'deadend_max');
+  b.tag([Lde / 2, sf.labelLift, 0], 'כיוון מילוט אחד בלבד');
+  b.person(Lde + sw + sf.personX, sf.personZ);
+};
+
+const BUILDERS: Record<string, Build> = { room, window: windowScene, balcony, stairs, railing, door, walking, ramp, stairwell, deadend };
 
 export const SCENE_IDS = Object.keys(BUILDERS);
 

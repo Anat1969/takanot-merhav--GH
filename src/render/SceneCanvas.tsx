@@ -118,6 +118,7 @@ function Content({ model, view, resetToken, reduced, activeKey, onHover, onPick 
           <Box key={i} size={v.size} base={v.base} finish={v.finish} pal={pal} />
         ))}
         {model.people.map((p, i) => <Person key={i} at={p.at} H={p.height} pal={pal} />)}
+        {model.ramps.map((r, i) => <RampMesh key={i} r={r} pal={pal} />)}
       </group>
 
       {model.lines.map((l, i) => (
@@ -226,6 +227,25 @@ function Box({ size, base, finish, pal }: { size: P3; base: P3; finish: Finish; 
       {finish !== 'patch' && (
         <Edges threshold={30} color={pal.edge} transparent opacity={solid ? 0.7 : 0.22} />
       )}
+    </mesh>
+  );
+}
+
+function RampMesh({ r, pal }: { r: SceneModel['ramps'][number]; pal: Palette }) {
+  const geo = useMemo(() => {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.lineTo(r.length, 0);
+    shape.lineTo(r.length, r.rise);
+    shape.closePath();
+    const g = new THREE.ExtrudeGeometry(shape, { depth: r.width, bevelEnabled: false });
+    g.translate(0, 0, -r.width / 2);
+    return g;
+  }, [r]);
+  return (
+    <mesh geometry={geo} position={r.start} castShadow receiveShadow>
+      <meshStandardMaterial color={pal.mass} roughness={0.9} />
+      <Edges threshold={30} color={pal.edge} transparent opacity={0.7} />
     </mesh>
   );
 }

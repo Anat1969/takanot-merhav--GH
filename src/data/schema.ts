@@ -2,7 +2,7 @@
 import { z } from 'zod';
 
 export const OpSchema = z.enum(['>=', '<=', '>', '<', '=']);
-export const UnitSchema = z.enum(['m', 'm2', 'ratio', 'count']);
+export const UnitSchema = z.enum(['m', 'm2', 'ratio', 'slope', 'count']);
 
 export const SourceSchema = z.object({
   checkedBy: z.string().min(1),

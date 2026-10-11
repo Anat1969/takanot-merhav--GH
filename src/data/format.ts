@@ -17,6 +17,8 @@ export function formatValue(p: Pick<Param, 'value' | 'unit'>): string {
       return v + NBSP + 'מ״ר';
     case 'ratio':
       return Math.round(v * 100) + '%';
+    case 'slope':
+      return '1:' + Math.round(1 / v);
     default:
       return String(v);
   }

@@ -12,6 +12,8 @@ export interface Polyline { points: P3[]; tone: 'plot' | 'buildingLine' | 'dim' 
 export interface Dim { from: P3; to: P3; offset: P3; label: string; paramKey: string | null; limit: boolean }
 export interface Tag { at: P3; label: string; paramKey: string | null; tone: 'limit' | 'ink' | 'pencil' }
 export interface Person { at: P3; height: number }
+/** משטח משופע: מתחיל ב־start בגובה 0 ועולה לאורך x */
+export interface Ramp { start: P3; length: number; rise: number; width: number }
 export interface Walker { points: P3[]; length: number; radius: number; speed: number; pause: number }
 
 export interface SceneModel {
@@ -21,6 +23,7 @@ export interface SceneModel {
   dims: Dim[];
   tags: Tag[];
   people: Person[];
+  ramps: Ramp[];
   walker: Walker | null;
 }
 
@@ -45,7 +48,7 @@ export function inputFor(sceneId: string, data: Data = DATA, override: Record<st
 
 /** בונה מצטבר, כדי שקוד הסצנות יהיה קצר וקריא */
 export class Builder {
-  m: SceneModel = { ground: { size: [0, 0], center: [0, 0] }, volumes: [], lines: [], dims: [], tags: [], people: [], walker: null };
+  m: SceneModel = { ground: { size: [0, 0], center: [0, 0] }, volumes: [], lines: [], dims: [], tags: [], people: [], ramps: [], walker: null };
   private input: SceneInput;
   private data: Data;
   constructor(input: SceneInput, data: Data = DATA) {
@@ -57,6 +60,7 @@ export class Builder {
   box(w: number, h: number, d: number, x: number, y: number, z: number, finish: Finish = 'mass', grow = true) {
     this.m.volumes.push({ size: [w, h, d], base: [x, y, z], finish, grow });
   }
+  ramp(start: P3, length: number, rise: number, width: number) { this.m.ramps.push({ start, length, rise, width }); }
   line(points: P3[], tone: Polyline['tone'], dashed = false) { this.m.lines.push({ points, tone, dashed }); }
   person(x: number, z: number, y = 0) { this.m.people.push({ at: [x, y, z], height: this.input.fx.personH }); }
 
@@ -99,6 +103,7 @@ export function extent(m: SceneModel): { min: P3; max: P3 } {
   }
   for (const d of m.dims) { add([d.from[0] + d.offset[0], d.from[1] + d.offset[1], d.from[2] + d.offset[2]]); add([d.to[0] + d.offset[0], d.to[1] + d.offset[1], d.to[2] + d.offset[2]]); }
   for (const t of m.tags) add(t.at);
+  for (const r of m.ramps) { add([r.start[0], r.start[1], r.start[2] - r.width / 2]); add([r.start[0] + r.length, r.start[1] + r.rise, r.start[2] + r.width / 2]); }
   if (!isFinite(min[0])) return { min: [-1, 0, -1], max: [1, 1, 1] };
   return { min, max };
 }
