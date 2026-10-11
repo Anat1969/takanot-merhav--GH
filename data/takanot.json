@@ -710,34 +710,115 @@
   },
   "sceneFixtures": {
     "room": {
-      "wallThickness": 0.2
+      "wallThickness": 0.2,
+      "ceilingThickness": 0.2,
+      "personX": 0.6,
+      "personZ": 0.4,
+      "heightDimOffset": 0.7,
+      "widthDimOffset": 0.8,
+      "lengthDimOffset": 1.6,
+      "groundMargin": 6
     },
     "window": {
       "sampleFloorArea": 12,
       "roomLength": 4,
       "roomHeight": 2.7,
-      "wallThickness": 0.2
+      "wallThickness": 0.2,
+      "patchHeight": 0.01,
+      "floorLabelX": 0.4,
+      "labelLift": 0.05,
+      "glassThickness": 0.04,
+      "widthDimDrop": 0.35,
+      "heightDimSide": 0.5,
+      "ratioLabelLift": 0.45,
+      "ratioLabelInset": 0.1,
+      "groundMargin": 6
     },
     "balcony": {
       "railHeight": 1,
-      "slabThickness": 0.18
+      "slabThickness": 0.18,
+      "glassThickness": 0.04,
+      "widthShare": 0.5,
+      "offsetShare": 0.15,
+      "lineOverhang": 3,
+      "lineLift": 0.02,
+      "labelX": 4.6,
+      "labelZ": 0.4,
+      "setbackDimX": 1,
+      "setbackDimOffset": 1.2,
+      "projDimXShare": 0.4,
+      "projDimSide": 0.6,
+      "projDimLift": 0.6,
+      "personXShare": 0.3,
+      "personZ": 1.2,
+      "groundMargin": 10
     },
     "stairs": {
       "flightWidth": 1.2,
-      "landingLength": 2
+      "landingLength": 2,
+      "ceilingThickness": 0.2,
+      "ceilingOverhang": 2,
+      "ceilingShift": 0.5,
+      "ceilingWiden": 0.4,
+      "nosingInset": 0.02,
+      "dimSide": 0.55,
+      "treadLift": 0.45,
+      "headroomSide": 0.6,
+      "stepsLabelLift": 0.5,
+      "stepsLabelSide": 0.9,
+      "personX": 0.6,
+      "personZ": 0.2,
+      "groundMargin": 6
     },
     "railing": {
       "landingWidth": 4,
       "landingDepth": 2.4,
-      "levelDrop": 3
+      "levelDrop": 3,
+      "slabThickness": 0.25,
+      "columnSize": 0.4,
+      "columnInset": 0.3,
+      "glassThickness": 0.05,
+      "handrailHeight": 0.05,
+      "handrailDepth": 0.08,
+      "personX": 0.4,
+      "personZ": -0.2,
+      "dimSide": 0.6,
+      "groundMargin": 6,
+      "groundShift": 1,
+      "groundExtraDepth": 8
     },
     "door": {
       "wallHeight": 2.7,
       "wallWidth": 4,
-      "wallThickness": 0.2
+      "wallThickness": 0.2,
+      "leafThickness": 0.05,
+      "leafGap": 0.02,
+      "leafInset": 0.03,
+      "leafWidthGap": 0.04,
+      "widthDimOffset": 1.4,
+      "heightDimOffset": 0.7,
+      "personX": 1.3,
+      "personZ": 1.2,
+      "groundDepth": 6,
+      "groundMargin": 5
     },
     "walking": {
-      "storeyHeight": 2.9
+      "storeyHeight": 2.9,
+      "wallGap": 0.2,
+      "stairExtraHeight": 0.4,
+      "stairDepthShare": 0.6,
+      "stairLabelLift": 1.1,
+      "pathLift": 0.05,
+      "walkerLift": 0.2,
+      "walkerRadius": 0.18,
+      "walkerSpeed": 2.2,
+      "walkerPause": 3,
+      "labelLift": 0.3,
+      "labelZ": 0.7,
+      "doorLabelZ": 0.8,
+      "personBack": 1.2,
+      "personZ": 0.3,
+      "groundMargin": 6
     }
   },
   "synonyms": [

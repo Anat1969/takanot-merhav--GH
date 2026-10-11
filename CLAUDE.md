@@ -35,5 +35,11 @@ npm run build
 
 ## עבודה
 
-- לא כותבים קוד אפליקציה לפני אישור של SPEC, DESIGN ו־DATA-MODEL.
-- `src/scenes/primitives/` מייבאים מודולים שעדיין לא קיימים כאן (model, materials, fixtures, palette, ui/links). הם ייכתבו מחדש לפי DATA-MODEL, בלי להעתיק מ־Hanchayit-GH.
+- SPEC, DESIGN ו־DATA-MODEL אושרו (אוקטובר 2026). גרסה 1 בנויה ופרוסה.
+- מבנה הקוד:
+  - `src/data/`: טעינה ובדיקה של `data/takanot.json` (zod והצלבות), עיצוב ערכים.
+  - `src/scenes/`: בוני סצנות טהורים שמחזירים `SceneModel` (נפחים, קווים, מידות, תוויות). בלי three ובלי מספרי מידה: `npm run validate` נכשל על כל ליטרל מספרי שאינו 0, 1, 2 או 0.5.
+  - `src/render/SceneCanvas.tsx`: רינדור ב־React Three Fiber. מאפייני מראה בלבד (צבע, צל, אנימציה).
+  - `src/ui/`: הממשק. `src/search/`: חיפוש בעברית.
+- סצנה חדשה: מוסיפים אותה ל־`scenes` ול־`sceneFixtures` בקובץ הנתונים, כותבים בונה ב־`src/scenes/scenes.ts`, ומוסיפים בדיקה ב־`scenes.test.ts` ששינוי ערך משנה גיאומטריה ותווית.
+- לפני כל דחיפה: `npm test` ו־`npm run build`. דחיפה ל־main מפרסמת לכתובת https://anat1969.github.io/takanot-merhav--GH/
