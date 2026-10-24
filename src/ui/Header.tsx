@@ -4,6 +4,15 @@ import type { Hit, Searcher } from '../search/index.ts';
 import { Highlight } from './Highlight.tsx';
 import type { Theme } from './theme.ts';
 
+declare module 'react' {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      'ai-menu': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { chat?: string; research?: string };
+    }
+  }
+}
+
 const SNIPPET = 110;
 
 export function Header({ searcher, onPick, theme }: {
@@ -104,6 +113,7 @@ export function Header({ searcher, onPick, theme }: {
         <button className="btn" type="button" onClick={theme.toggle}>
           {theme.resolved === 'dark' ? 'תצוגה בהירה' : 'תצוגה כהה'}
         </button>
+        <ai-menu />
       </div>
       <p className="notice">
         <strong>גרסת MVP.</strong> מבנה הסעיפים וכותרותיהם לפי נבו. התמציות נכתבו לעבודה ואינן הנוסח, והערכים המסומנים ״לאימות״ טעונים בדיקה מול הנוסח הרשמי לפני כל שימוש.
