@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => ({
   // GitHub Pages מגיש את האתר תחת שם הריפו
-  base: '/takanot-merhav--GH/',
+  base: process.env.VERCEL ? '/' : '/takanot-merhav--GH/',
   plugins: [react()],
   // תצוגה מקדימה כקובץ HTML יחיד: גופנים ונכסים מוטמעים בקוד
   build:
