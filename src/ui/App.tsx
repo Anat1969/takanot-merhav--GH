@@ -26,6 +26,8 @@ export function App() {
   const [pinnedKey, setPinnedKey] = useState<string | null>(null);
   const [focus, setFocus] = useState<FocusRequest | null>(null);
   const [view, setView] = useState<View>('axon');
+  // הסיור חי ברמת האפליקציה, כדי שימשיך מסצנה לסצנה באותו חלק
+  const [touring, setTouring] = useState(false);
   const theme = useTheme();
 
   const go = useCallback((ref: string, keepTerms = false) => {
@@ -69,7 +71,7 @@ export function App() {
         theme={theme}
       />
       <main className="main">
-        <IndexNav current={current} onGo={(r) => go(r)} />
+        <IndexNav current={current} onGo={(r) => { setTouring(false); go(r); }} />
         <RuleText
           current={current}
           terms={terms}
@@ -90,6 +92,8 @@ export function App() {
           onPick={pickFromModel}
           onGo={(r) => go(r)}
           pinnedKey={pinnedKey}
+          touring={touring}
+          setTouring={setTouring}
         />
       </main>
     </div>
