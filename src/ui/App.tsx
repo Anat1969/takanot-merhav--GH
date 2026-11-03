@@ -89,6 +89,7 @@ export function App() {
           onHover={setHoverKey}
           onPick={pickFromModel}
           onGo={(r) => go(r)}
+          pinnedKey={pinnedKey}
         />
       </main>
     </div>

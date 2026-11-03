@@ -3,6 +3,7 @@ import { DATA, SECTIONS, paramsOfScene } from '../data/data.ts';
 import { withOp } from '../data/format.ts';
 import type { View } from '../render/SceneCanvas.tsx';
 import { buildScene } from '../scenes/scenes.ts';
+import { StepBar } from './StepBar.tsx';
 
 const SceneCanvas = lazy(() => import('../render/SceneCanvas.tsx').then((m) => ({ default: m.SceneCanvas })));
 
@@ -22,6 +23,7 @@ interface Props {
   onHover: (k: string | null) => void;
   onPick: (k: string) => void;
   onGo: (ref: string) => void;
+  pinnedKey: string | null;
 }
 
 function webglAvailable(): boolean {
@@ -39,7 +41,7 @@ class GLBoundary extends Component<{ children: ReactNode; fallback: ReactNode },
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onHover, onPick, onGo }: Props) {
+export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onHover, onPick, onGo, pinnedKey }: Props) {
   const [resetToken, setReset] = useState(0);
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const gl = useMemo(webglAvailable, []);
@@ -47,6 +49,13 @@ export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onH
   const s = SECTIONS[current];
   const keys = sceneId ? paramsOfScene(sceneId) : [];
   const unverified = keys.filter((k) => !DATA.params[k].verified).length;
+  // צעדי הסיור: רק פרמטרים שיש להם מידה או תווית במודל, לפי סדר הסעיפים
+  const stepKeys = useMemo(() => {
+    if (!model) return [];
+    const shown = new Set([...model.dims, ...model.tags].map((d) => d.paramKey).filter(Boolean));
+    return keys.filter((k) => shown.has(k));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [model]);
   const glFail = (
     <div className="empty-stage">
       <strong>המודל לא נטען.</strong>
@@ -100,6 +109,8 @@ export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onH
           </div>
         )}
       </div>
+
+      {model && gl ? <StepBar keys={stepKeys} pinnedKey={pinnedKey} onStep={onPick} /> : null}
 
       <div className="titleblock">
         <div><span>תקנה</span><b>{s?.ref}</b></div>
