@@ -1,0 +1,38 @@
+# קישור ישיר מ-GitHub, בלי Vercel: בונה את app/ בנתיב יחסי ודוחף אותה ל-main.
+# https://raw.githack.com/Anat1969/takanot-merhav--GH/main/app/index.html
+# כך רואים כל שינוי גם כשמכסת הפריסות של Vercel נגמרה. vercel.json מדלג על קומיט שמשנה רק את app/.
+name: בניית app לקישור ישיר
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['app/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-app
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:github
+      - name: דחיפה רק אם app/ השתנתה
+        run: |
+          git add app
+          if git diff --cached --quiet; then echo "app/ לא השתנתה"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "בניית app לקישור הישיר מ-GitHub"
+          git push
