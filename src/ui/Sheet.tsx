@@ -1,5 +1,5 @@
 import { Component, lazy, Suspense, useMemo, useState, type ReactNode } from 'react';
-import { DATA, SECTIONS, paramsOfScene } from '../data/data.ts';
+import { DATA, SECTIONS, nextSceneInPart, paramsOfScene } from '../data/data.ts';
 import { withOp } from '../data/format.ts';
 import type { View } from '../render/SceneCanvas.tsx';
 import { buildScene } from '../scenes/scenes.ts';
@@ -24,6 +24,8 @@ interface Props {
   onPick: (k: string) => void;
   onGo: (ref: string) => void;
   pinnedKey: string | null;
+  touring: boolean;
+  setTouring: (t: boolean | ((t: boolean) => boolean)) => void;
 }
 
 function webglAvailable(): boolean {
@@ -41,12 +43,13 @@ class GLBoundary extends Component<{ children: ReactNode; fallback: ReactNode },
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onHover, onPick, onGo, pinnedKey }: Props) {
+export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onHover, onPick, onGo, pinnedKey, touring, setTouring }: Props) {
   const [resetToken, setReset] = useState(0);
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const gl = useMemo(webglAvailable, []);
   const model = useMemo(() => (sceneId ? buildScene(sceneId) : null), [sceneId]);
   const s = SECTIONS[current];
+  const nextScene = useMemo(() => nextSceneInPart(current), [current]);
   const keys = sceneId ? paramsOfScene(sceneId) : [];
   const unverified = keys.filter((k) => !DATA.params[k].verified).length;
   // צעדי הסיור: רק פרמטרים שיש להם מידה או תווית במודל, לפי סדר הסעיפים
@@ -110,7 +113,16 @@ export function Sheet({ current, sceneId, view, onView, themeKey, activeKey, onH
         )}
       </div>
 
-      {model && gl ? <StepBar keys={stepKeys} pinnedKey={pinnedKey} onStep={onPick} /> : null}
+      {model && gl ? (
+        <StepBar
+          keys={stepKeys}
+          pinnedKey={pinnedKey}
+          onStep={onPick}
+          touring={touring}
+          setTouring={setTouring}
+          next={nextScene ? { title: DATA.scenes[nextScene.sceneId].title, go: () => onGo(nextScene.ref) } : null}
+        />
+      ) : null}
 
       <div className="titleblock">
         <div><span>תקנה</span><b>{s?.ref}</b></div>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import raw from '../../data/takanot.json';
-import { DATA, SECTIONS } from './data.ts';
+import { DATA, SECTIONS, nextSceneInPart } from './data.ts';
 import { formatValue, withOp } from './format.ts';
 import { crossCheck, DataSchema } from './schema.ts';
 
@@ -26,4 +26,27 @@ describe('עיצוב ערכים', () => {
   it('יחס', () => expect(formatValue({ value: 0.1, unit: 'ratio' })).toBe('10%'));
   it('שיפוע', () => expect(formatValue({ value: 1 / 12, unit: 'slope' })).toBe('1:12'));
   it('אופרטור', () => expect(withOp({ value: 1.05, unit: 'm', op: '>=' })).toBe('≥ 1.05 מ׳'));
+});
+
+describe('nextSceneInPart', () => {
+  it('ממשיך לסצנה אחרת באותו חלק, לפי סדר תוכן העניינים', () => {
+    const n = nextSceneInPart('3.2.2.5');
+    expect(n).not.toBeNull();
+    expect(n!.sceneId).not.toBe(DATA.rules['3.2.2.5'].scene);
+    expect(SECTIONS[n!.ref].partId).toBe(SECTIONS['3.2.2.5'].partId);
+  });
+  it('מחזיר null לסעיף בלי המחשה', () => {
+    const plain = Object.keys(SECTIONS).find((r) => !DATA.rules[r]?.scene)!;
+    expect(nextSceneInPart(plain)).toBeNull();
+  });
+  it('עובר על כל הסצנות בחלק בלי לחזור לאותה סצנה', () => {
+    const seen = new Set<string>();
+    let n = nextSceneInPart('3.2.1.3');
+    while (n) {
+      expect(seen.has(n.sceneId)).toBe(false);
+      seen.add(n.sceneId);
+      n = nextSceneInPart(n.ref);
+    }
+    expect(seen.size).toBeGreaterThan(1);
+  });
 });
