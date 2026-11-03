@@ -307,10 +307,12 @@ button.dim-label { cursor: pointer; }
 /* פס צעדים: סיור במידות של הסצנה, ערך אחרי ערך */
 .stepbar {
   display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px;
-  padding: 8px 12px; border-block-start: 1px solid var(--rule);
+  padding: 8px 12px; border-block-start: 2px solid var(--ink-3);
   background: linear-gradient(180deg, var(--surface), var(--surface-2));
 }
 .stepbar .btn:disabled { opacity: .45; cursor: default; }
+.stepbar-title { grid-column: 1 / -1; margin: 0; font-size: 12.5px; color: var(--ink-3); }
+.stepbar-title b { color: var(--ink); font-weight: var(--w-strong); margin-inline-end: 6px; }
 .stepbar-now { min-width: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
 .stepbar-now b { font-weight: var(--w-strong); color: var(--ink); }
 .stepbar-count { display: block; font-size: 11px; color: var(--ink-3); }

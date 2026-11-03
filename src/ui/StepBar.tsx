@@ -56,6 +56,10 @@ export function StepBar({ keys, pinnedKey, onStep, next, touring, setTouring }: 
         if (e.key === 'ArrowRight') { e.preventDefault(); setTouring(false); go(idx - 1); }
       }}
     >
+      {/* כותרת גלויה: בלי מילה, הפס נראה כמו עוד שורת כפתורים (ענת, 03.11.2026: "לא מבינה מה עשית, סיור?") */}
+      <p className="stepbar-title">
+        <b>סיור במידות</b> מעבר על כל מידה במודל, אחת אחרי השנייה, והנוסח מתעדכן איתה
+      </p>
       <button type="button" className="btn" onClick={() => { setTouring(false); go(idx - 1); }} disabled={idx <= 0}>
         הקודם
       </button>
