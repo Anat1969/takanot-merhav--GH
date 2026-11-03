@@ -1,5 +1,7 @@
 **[לאפליקציה החיה: https://takanot-merhav-gh.vercel.app](https://takanot-merhav-gh.vercel.app)**
 
+קישור ישיר מ-GitHub, גם כשמכסת Vercel נגמרה: https://raw.githack.com/Anat1969/takanot-merhav--GH/main/app/index.html (בפעם הראשונה אולי יופיע דף "One more step": לוחצים "Open the page").
+
 # תקנות במרחב
 
 מדריך תלת־ממדי לתוספת השנייה לתקנות התכנון והבנייה (בקשה להיתר, תנאיו ואגרות), התש״ל-1970: תוכן עניינים, חיפוש בעברית, ושבע המחשות שבהן כל מידה במודל מקושרת לערך בנוסח.

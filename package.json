@@ -8,7 +8,8 @@
     "test": "vitest run",
     "validate": "node scripts/validate.ts",
     "build": "npm run validate && tsc -p . && vite build && node scripts/spa-fallback.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:github": "npm run validate && tsc -p . && vite build --base=./ --outDir app --emptyOutDir"
   },
   "dependencies": {
     "@fontsource/rubik": "^5.3.0",

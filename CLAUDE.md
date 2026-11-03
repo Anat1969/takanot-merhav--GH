@@ -42,6 +42,7 @@ npm run build
   - `src/render/SceneCanvas.tsx`: רינדור ב־React Three Fiber. מאפייני מראה בלבד (צבע, צל, אנימציה).
   - `src/ui/`: הממשק. `src/search/`: חיפוש בעברית.
 - סצנה חדשה: מוסיפים אותה ל־`scenes` ול־`sceneFixtures` בקובץ הנתונים, כותבים בונה ב־`src/scenes/scenes.ts`, ומוסיפים בדיקה ב־`scenes.test.ts` ששינוי ערך משנה גיאומטריה ותווית.
+- **קישור ישיר מ-GitHub** (כלל ענת, 03.11.2026): https://raw.githack.com/Anat1969/takanot-merhav--GH/main/app/index.html. ה-Action `build-app.yml` בונה את `app/` (`npm run build:github`, נתיב יחסי) בכל דחיפה ל-main, ו-`vercel.json` מדלג על קומיט שמשנה רק את `app/`.
 - לפני כל דחיפה: `npm test` ו־`npm run build`. דחיפה ל־main מפרסמת לכתובת https://anat1969.github.io/takanot-merhav--GH/
 
 ## יומן תיקונים
