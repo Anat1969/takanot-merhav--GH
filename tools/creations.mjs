@@ -113,7 +113,7 @@ const out = {
   app: {
     id: 'takanot',
     name: D.meta.title,
-    url: 'https://takanot-merhav-gh.vercel.app',
+    url: 'https://anat1969.github.io/takanot-merhav--GH/',
     repo: 'Anat1969/takanot-merhav--GH',
     description: `מדריך תלת־ממדי ל${D.meta.regulation}. כל כתבה בנויה מתמציות המדריך, והערכים בה לאימות מול הנוסח הרשמי.`,
     palette: { a: '#3b3f45', b: '#a32f27', c: '#767b83', s: '#474b51', accent: '#a32f27', marker: '#ecd9d5', paper: '#f3f4f5', paper2: '#e6e7e9', ink: '#1c1e21', bp: '#3b3f45', 'b-wash': '#f1e4e2', 's-wash': '#e9ebed' },
