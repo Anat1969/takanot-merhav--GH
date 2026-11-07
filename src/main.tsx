@@ -5,9 +5,14 @@ import '@fontsource/rubik/400.css';
 import '@fontsource/rubik/500.css';
 import './styles/app.css';
 import { App } from './ui/App.tsx';
+import { Creations, useCreationsPage } from './ui/Creations.tsx';
+
+function Root() {
+  return useCreationsPage() ? <Creations /> : <App />;
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Root />
   </StrictMode>,
 );
