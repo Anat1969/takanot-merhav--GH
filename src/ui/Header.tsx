@@ -3,6 +3,7 @@ import { DATA } from '../data/data.ts';
 import type { Hit, Searcher } from '../search/index.ts';
 import { Highlight } from './Highlight.tsx';
 import type { Theme } from './theme.ts';
+import { CreationsLink } from './Creations.tsx';
 
 declare module 'react' {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -110,6 +111,7 @@ export function Header({ searcher, onPick, theme }: {
         )}
       </div>
       <div className="tools">
+        <CreationsLink />
         <button className="btn" type="button" onClick={theme.toggle}>
           {theme.resolved === 'dark' ? 'תצוגה בהירה' : 'תצוגה כהה'}
         </button>
